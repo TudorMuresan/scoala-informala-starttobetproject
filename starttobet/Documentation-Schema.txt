@@ -1,0 +1,42 @@
+The project will be created based on hardcoded JSON.
+	
+		
+		For now we skip the feed requests and get all the data from local files saved in the project. 
+		We will have a JSON for championship(ex JSON for Premier Ligue, JSON for La Liga, JSON for  Ligue 1 etc.)
+		
+		I have started a class where I parsed first round from Premier League. I used org.json package that i've setted it to the build path.
+		JSON will be optional if you want to learn, basically after we will build the JSON's we will have a class that will parse football 
+		and a class that will parse tennis if we will add tennis.
+		
+		The application should parse the JSON documents and insert the processed informations into the database.(this will be after we create all the logic and unit tests).
+		
+	 	For the sports logic : We will save information into two tables from the database: one table with every fixtures and the second one with the odds for every fixture.
+		The relation between tables is one to many(fixtures table to many relation with odds table).(I will explain next time when we meet this).
+		The first table should have a field for the unique id for every fixture and several fields with home team name, away team name.
+		The second table will have a a field for the unique id and one with the foreign key for the related fixture id, a field with the betting type(1,x,2,1x etc),
+		one  field with the odd related to the betting type(2.50,1.33, etc)
+		and it will be great if we put a timestamp there. Here we need to test if we can execute a query on the odds table to get the max (the last) inserted row for one odd so we can obtain the updated odd for a fixture.
+
+		For the customer logic: We will have to make a table where we will save customers signed up to our application.
+		Another table will with the same logic from the fixtures databases, that will stock the bet receipts. One customer can have many receipts, so a relation one to many will be here too.
+		
+		We have to make all the tables on all of our PC/Laptops to be the same to avoid possible problems that can occur.
+		
+		The core business logic will be at the bets validation. Here , when an event for example will be finished, we will have a score. After the score will be introduced in the database,
+		we have to verify if this event is present on any receipt from the customers. So we will search the event by id and see if the score matches. 
+		If one match from the receipt fails before all the matches will be played, we must inform the user that his receipt has failed.
+		Second variant, when all the matches from the receipt are ok we must inform the user that he won X dollars.
+		
+		I am thinking to inform the user through an email about a specific receipt (win/lose).We must verify this.
+		
+		
+		Controllers: We will have one controller for every type of sport.
+		DAO: we will have an interface for sports, and one interface for customers.
+		
+		We will have the domain package for every type of sport.
+		Here we need to have an interface with the id which will be the common field for every type of sport, we will need some audit information(created by, created at,updatedby,updatedat).
+		The staging informations are needed for further development, to see the admin of thread that made update/insert and when the update/insert is executed into the table.
+		
+		Given the structure from git hub, you need to start to write code. See the course examples, we all should work for the controllers. There will be FootballController, CustomerController for now.
+		For now look at the course examples and try to make the controller. Tomorrow at the course we will see more examples to handle the front end development. So tomorrow we can discuss about 
+		the code we need to write all of us. 

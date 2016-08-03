@@ -1,0 +1,200 @@
+{
+  "name": "English Premier League 2016/17",
+  "rounds": [
+    {
+      "name": "Matchday 1",
+      "matches": [
+        {
+          "date": "2016-08-13",
+          "team1": {
+            "key": "hullcity",
+            "name": "Hull City",
+            "code": "HUL"
+          },
+          "team2": {
+            "key": "leicester",
+            "name": "Leicester",
+            "code": "LEI"
+          },
+          "hWin": 3.30,
+          "aWin": 2.20,
+          "draw": 3.25,
+          "hOrDraw": 1.70,
+          "aOrDraw": 1.34,
+          "hOra": 1.35
+        },
+        {
+          "date": "2016-08-13",
+          "team1": {
+            "key": "burnley",
+            "name": "Burnley",
+            "code": "BUR"
+          },
+          "team2": {
+            "key": "swansea",
+            "name": "Swansea",
+            "code": "SWA"
+          },
+          "hWin": 2.50,
+          "aWin": 2.80,
+          "draw": 3.25,
+          "hOrDraw": 1.44,
+          "aOrDraw": 1.55,
+          "hOra": 1.35
+        },
+        {
+          "date": "2016-08-13",
+          "team1": {
+            "key": "crystalppalace",
+            "name": "Crystal Palace",
+            "code": "CRY"
+          },
+          "team2": {
+            "key": "westbrom",
+            "name": "West Brom",
+            "code": "WBA"
+          },
+          "hWin": 2.00,
+          "aWin": 4.00,
+          "draw": 3.20,
+          "hOrDraw": 1.25,
+          "aOrDraw": 1.83,
+          "hOra": 1.36
+        },
+        {
+          "date": "2016-08-13",
+          "team1": {
+            "key": "everton",
+            "name": "EVERTON",
+            "code": "EVT"
+          },
+          "team2": {
+            "key": "tottenham",
+            "name": "Tottenham",
+            "code": "TOT"
+          },
+          "hWin": 2.88,
+          "aWin": 2.40,
+          "draw": 3.30,
+          "hOrDraw": 1.57,
+          "aOrDraw": 1.42,
+          "hOra": 1.34
+        },
+        {
+          "date": "2016-08-13",
+          "team1": {
+            "key": "middlesbrough",
+            "name": "Middlesbrough",
+            "code": "MID"
+          },
+          "team2": {
+            "key": "stokecity",
+            "name": "Stoke City",
+            "code": "STO"
+          },
+          "hWin": 2.10,
+          "aWin": 3.50,
+          "draw": 3.30,
+          "hOrDraw": 1.30,
+          "aOrDraw": 1.75,
+          "hOra": 1.34
+        },
+        {
+          "date": "2016-08-13",
+          "team1": {
+            "key": "southampton",
+            "name": "Southampton",
+            "code": "SOU"
+          },
+          "team2": {
+            "key": "watford",
+            "name": "Watford",
+            "code": "WAT"
+          },
+          "hWin": 1.80,
+          "aWin": 4.33,
+          "draw": 3.60,
+          "hOrDraw": 1.22,
+          "aOrDraw": 2.05,
+          "hOra": 1.29
+        },
+        {
+          "date": "2016-08-13",
+          "team1": {
+            "key": "manchestercity",
+            "name": "Manchester City",
+            "code": "MTC"
+          },
+          "team2": {
+            "key": "sunderland",
+            "name": "Sunderland",
+            "code": "SUN"
+          },
+          "hWin": 1.20,
+          "aWin": 13.00,
+          "draw": 6.50,
+          "hOrDraw": 1.05,
+          "aOrDraw": 4.50,
+          "hOra": 1.13
+        },
+        {
+          "date": "2016-08-14",
+          "team1": {
+            "key": "bournemouth",
+            "name": "Bournemouth",
+            "code": "BOU"
+          },
+          "team2": {
+            "key": "manchesterunited",
+            "name": "Manchester United",
+            "code": "MAN"
+          },
+          "hWin": 4.50,
+          "aWin": 1.73,
+          "draw": 3.75,
+          "hOrDraw": 2.15,
+          "aOrDraw": 1.20,
+          "hOra": 1.29
+        },
+        {
+          "date": "2016-08-14",
+          "team1": {
+            "key": "arsenal",
+            "name": "Arsenal",
+            "code": "ARS"
+          },
+          "team2": {
+            "key": "liverpool",
+            "name": "Liverpool",
+            "code": "LIV"
+          },
+          "hWin": 2.15,
+          "aWin": 3.40,
+          "draw": 3.30,
+          "hOrDraw": 1.33,
+          "aOrDraw": 1.73,
+          "hOra": 1.34
+        },
+        {
+          "date": "2016-08-15",
+          "team1": {
+            "key": "chelsea",
+            "name": "Chelsea",
+            "code": "CHE"
+          },
+          "team2": {
+            "key": "westhamunited",
+            "name": "West Ham United",
+            "code": "WHU"
+          },
+          "hWin": 1.62,
+          "aWin": 5.50,
+          "draw": 3.75,
+          "hOrDraw": 1.17,
+          "aOrDraw": 2.30,
+          "hOra": 1.29
+        }
+      ]
+    }
+  ]
+}
