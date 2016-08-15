@@ -1,8 +1,12 @@
 package ro.sci.starttobet.domain;
 
-public class Football implements DomainObject{
+import java.time.LocalDate;
 
-	private int id;
+public class Football extends AbstractModel{
+
+
+	private int id;//TODO delete
+	
 	
 	//home/away teams
 	private String homeTeam;
@@ -15,6 +19,9 @@ public class Football implements DomainObject{
 	private double hOrDraw;
 	private double aOrDraw;
 	private double hOra;
+	
+	private LocalDate matchDate;
+	private String matchTitle;
 	
 	public String getHomeTeam() {
 		return homeTeam;
@@ -84,13 +91,25 @@ public class Football implements DomainObject{
 		this.id = id;
 	}
 
-
-	public void setId(Integer id) {
-		this.id = id;
+	@Override
+	public String toString() {
+		return "Football [id=" + id + ", homeTeam=" + homeTeam + ", awayTeam=" + awayTeam + ", hWin=" + hWin + ", aWin=" + aWin + ", draw=" + draw + ", hOrDraw=" + hOrDraw
+				+ ", aOrDraw=" + aOrDraw + ", hOra=" + hOra + "]";
 	}
 
-	public Integer getId() {
-		return id;
+	public String getMatchTitle() {
+		return matchTitle;
 	}
 
+	public void setMatchTitle(String matchTitle) {
+		this.matchTitle = matchTitle;
+	}
+
+	public LocalDate getMatchDate() {
+		return matchDate;
+	}
+
+	public void setMatchDate(LocalDate matchDate) {
+		this.matchDate = matchDate;
+	}
 }
