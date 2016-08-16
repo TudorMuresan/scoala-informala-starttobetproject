@@ -1,7 +1,5 @@
 package ro.sci.starttobet.controllers;
 
-import java.io.IOException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,6 +16,9 @@ public class FootballController{
 	@Autowired
 	private FootballService footballService;
 	
+	@Autowired
+	private JsonService jsonService;
+	
 /*	@RequestMapping(value ="match/list")
 	public ModelAndView list() throws Exception {
 		ModelAndView modelAndView = new ModelAndView("match/list");
@@ -26,8 +27,8 @@ public class FootballController{
 	}*/
 	
 	@RequestMapping(value ="") 
-	public ModelAndView showFootball(JsonService js) throws Exception {
-		js.scanForFiles();
+	public ModelAndView showFootball() throws Exception {
+		jsonService.scanForFiles();
 		ModelAndView modelAndView = new ModelAndView("match/list");
 		modelAndView.addObject("matches", footballService.listAll());
 		return modelAndView;

@@ -12,10 +12,16 @@ import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import ro.sci.starttobet.domain.Football;
 
+@Component
 public class JsonService implements JsonEventsParser{
+	
+	@Autowired
+	FootballParser footballParser;
 	
 	private final File folder = new File("src/main/resources/static");
  	private final File[] listOfFiles = folder.listFiles();
@@ -27,7 +33,7 @@ public class JsonService implements JsonEventsParser{
 		 Object sportTypeIdentificator = obj.get("sportType");
 		 List<Object> result = null;
 		 if(((String)sportTypeIdentificator).equalsIgnoreCase("Football")){
-			 result = new FootballParser().parseFootballEvents(obj); 
+			 result = footballParser.parseFootballEvents(obj); 
 		 }
 		 else if(((String)sportTypeIdentificator).equalsIgnoreCase("Tennis")){
 			 //TODO tennis parsing 

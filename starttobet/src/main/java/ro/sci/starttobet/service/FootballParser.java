@@ -8,9 +8,11 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import ro.sci.starttobet.domain.Football;
 
+@Component
 public class FootballParser {
 	
 	@Autowired

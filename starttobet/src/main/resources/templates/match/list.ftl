@@ -19,9 +19,8 @@
   <div class="panel-heading">Panel heading</div>
   <div class="panel-body">
   </div>
-
-  <table class="table">
-	<tr>
+  <table class="table table-striped">
+	<tr class="info">
 		<th>Date</th>
 		<th>Match Title</th>
 		<th>1</th>
@@ -31,7 +30,6 @@
 		<th>x2</th>
 		<th>12</th>
 		<th></th>
-		
 	</tr>
 	<!-- begin iteration -->
 	[#if matches??]
@@ -39,12 +37,12 @@
 			<tr>
 				<td>${match.matchDate}</td>
 				<td>${match.matchTitle}</td>
-				<td>${match.hWin}</td>
-				<td>${match.aWin}</td>
-				<td>${match.draw}</td>
-				<td>${match.hOrDraw}</td>
-				<td>${match.aOrDraw}</td>
-				<td>${match.hOrA}</td>				
+				<td><button type="button" class="btn btn-warning">${match.hWin?string["0.00"]}</button></td>
+				<td><button type="button" class="btn btn-warning">${match.aWin?string["0.00"]}</button></td>
+				<td><button type="button" class="btn btn-warning">${match.draw?string["0.00"]}</button></td>
+				<td><button type="button" class="btn btn-warning">${match.hOrDraw?string["0.00"]}</button></td>
+				<td><button type="button" class="btn btn-warning">${match.aOrDraw?string["0.00"]}</button></td>
+				<td><button type="button" class="btn btn-warning">${match.hOra?string["0.00"]}</button></td>				
 			</tr>
 		[/#list]
 	[/#if]
