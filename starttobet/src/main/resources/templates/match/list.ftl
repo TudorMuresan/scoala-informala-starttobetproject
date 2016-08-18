@@ -15,9 +15,15 @@
 [#escape x as x?html]
 
 <div class="panel panel-default">
+
   <!-- Default panel contents -->
-  <div class="panel-heading">Panel heading</div>
+  <div class="panel-heading">Welcome aboard!</div>
   <div class="panel-body">
+
+  	<form action="/login">
+   		 <input type="submit" style="float: right;" value="Login" />
+	</form>
+	
   </div>
   <table class="table table-striped">
 	<tr class="info">
