@@ -26,9 +26,9 @@
     
     <div class="col-md-4">
       <section class="login-form">
-        <form method="post" action="#" role="login">
+        <form method="POST" action="/login/save">
           <img src="http://www.clipartkid.com/images/201/kicking-soccer-ball-clip-art-clipart-panda-free-clipart-images-4YnTr3-clipart.png" class="img-responsive" alt="" />
-          <input type="name" name="name" placeholder="Username" required class="form-control input-lg" />
+          <input type="text" name="userName" placeholder="Username" required class="form-control input-lg" />
           
           <input type="password" class="form-control input-lg" id="password" placeholder="Password" required="" />
           

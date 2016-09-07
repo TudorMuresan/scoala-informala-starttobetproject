@@ -11,11 +11,13 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import ro.sci.starttobet.domain.User;
 import ro.sci.starttobet.service.SecurityService;
 
-public class SecurityFilter  implements Filter {
+@Component
+public class SecurityFilter implements Filter {
 
 	@Autowired
 	private SecurityService securityService;
@@ -37,9 +39,9 @@ public class SecurityFilter  implements Filter {
 		securityService.
 		setCurrentUser(user);
 		
-		System.out.println("Thread name: " + Thread.currentThread().getName() +
-				", current user: " + (user != null ? user.getUserName() : null));
-		
+//		System.out.println("Thread name: " + Thread.currentThread().getName() +
+//				", current user: " + (user != null ? user.getUserName() : null));
+//		
 		chain.doFilter(request, response);
 		
 	}

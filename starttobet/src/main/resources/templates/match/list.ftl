@@ -16,22 +16,32 @@
 
 <div class="panel panel-default">
 
-  <!-- Default panel contents -->
-  <div class="panel-heading">Welcome aboard!</div>
-  <div class="panel-body">
-
-  	<form action="/login">
-   		 <input type="submit" style="float: right;" value="Login" />
-	</form>
+    <div class="panel-heading">
+  		<h3>Welcome aboard!<b>&nbsp&nbsp[#if currentUser??]${currentUser.userName!''}</b></h3>[/#if]
+  			
+  			<form action="/login">
+   				 <input type="image" src="http://www.freeiconspng.com/uploads/login-button-png-4.jpg" alt="Submit" align="right" width="120" height="32">
+   			</form>
+   	</div>
+   	
+  <style>
+	table, th, td {
+    	border-collapse: collapse;
+	}
 	
-  </div>
-  <table class="table table-striped">
-	<tr class="info">
+	th, td {
+    padding: 9px;
+	}
+  </style>
+ 
+  <table style="width:100%" background="https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Soccer_Field_Transparant.svg/2000px-Soccer_Field_Transparant.svg.png">
+  <body>
+	<tr>
 		<th>Date</th>
 		<th>Match Title</th>
 		<th>1</th>
-		<th>2</th>
 		<th>x</th>
+		<th>2</th>
 		<th>1x</th>
 		<th>x2</th>
 		<th>12</th>
@@ -43,18 +53,18 @@
 			<tr>
 				<td>${match.matchDate}</td>
 				<td>${match.matchTitle}</td>
-				<td><button type="button" class="btn btn-warning">${match.hWin?string["0.00"]}</button></td>
-				<td><button type="button" class="btn btn-warning">${match.aWin?string["0.00"]}</button></td>
-				<td><button type="button" class="btn btn-warning">${match.draw?string["0.00"]}</button></td>
+				<td><button type="button" class="btn btn-success">${match.hWin?string["0.00"]}</button></td>
+				<td><button type="button" class="btn btn-danger">${match.draw?string["0.00"]}</button></td>
+				<td><button type="button" class="btn btn-success">${match.aWin?string["0.00"]}</button></td>
 				<td><button type="button" class="btn btn-warning">${match.hOrDraw?string["0.00"]}</button></td>
 				<td><button type="button" class="btn btn-warning">${match.aOrDraw?string["0.00"]}</button></td>
-				<td><button type="button" class="btn btn-warning">${match.hOra?string["0.00"]}</button></td>				
+				<td><button type="button" class="btn btn-primary">${match.hOra?string["0.00"]}</button></td>				
 			</tr>
 		[/#list]
 	[/#if]
 	
 	<!-- end iteration -->
-
+</body>
 </table>
 </div>
 
