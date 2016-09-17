@@ -26,6 +26,22 @@
 	  background:         linear-gradient(#f7f7f7, #dbdbdb, #bfbfbf);
 	}
 </style>
+
+<style>
+	h1 {
+    	text-shadow: 2px 2px 2px black, 1px 2px 15px gray;
+	}
+</style>
+
+<style>
+	h1.serif {
+	    font-family: "Arial Black", Gadget, sans-serif;
+	}
+	h3.serif {
+	font-family: "Arial Black", Gadget, sans-serif;
+				}
+</style>
+					
 <nav class="navbar navbar-inverse">
   <div class="container-fluid">
     <div class="navbar-header">
@@ -33,25 +49,10 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
-      </button>
-			      <style>
-						h1 {
-					    	text-shadow: 2px 2px 2px black, 1px 2px 15px gray;
-						}
-					</style>
-					<style>
-						h1.serif {
-						    font-family: "Arial Black", Gadget, sans-serif;
-						}
-						h3.serif {
-						    font-family: "Arial Black", Gadget, sans-serif;
-						}
-					</style>
-				
+      </button>			
       <a class="navbar-brand" href="/..">STARTTOBET.com</a>
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
-
       <ul class="nav navbar-nav navbar-right">
       	<li>[#if currentUser??]
       		<a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-user"> ${currentUser.userName!''}</span></a>
@@ -70,55 +71,5 @@
     </div>
   </div>
 </nav>
+<h2>Available Soon....</h2>
 
-[#escape x as x?html]
-
-<div class="panel panel-default">
-
-  
-  <style>
-	table, th, td {
-    	border-collapse: collapse;
-	}
-	
-	th, td {
-    padding: 9px;
-	}
-  </style>
- 
-  <table class="table table-striped">
-	<tr class="info" >
-		<th>Date</th>
-		<th>Match Title</th>
-		<th><p style="margin-left: 25px">1</th>
-		<th><p style="margin-left: 25px">2</th>
-		<th><p style="margin-left: 25px">x</th>
-		<th><p style="margin-left: 20px">1x</th>
-		<th><p style="margin-left: 20px">x2</th>
-		<th><p style="margin-left: 20px">12</th>
-		<th></th>
-	</tr>
-	<!-- begin iteration -->
-	[#if matches??]
-		[#list matches as match] 
-			<tr>
-				<td>${match.matchDate}</td>
-				<td>${match.matchTitle}</td>
-				<td><button type="button" class="btn btn-warning">${match.hWin?string["0.00"]}</button></td>
-				<td><button type="button" class="btn btn-warning">${match.aWin?string["0.00"]}</button></td>
-				<td><button type="button" class="btn btn-warning">${match.draw?string["0.00"]}</button></td>
-				<td><button type="button" class="btn btn-warning">${match.hOrDraw?string["0.00"]}</button></td>
-				<td><button type="button" class="btn btn-warning">${match.aOrDraw?string["0.00"]}</button></td>
-				<td><button type="button" class="btn btn-warning">${match.hOra?string["0.00"]}</button></td>				
-			</tr>
-		[/#list]
-	[/#if]
-	
-	<!-- end iteration -->
-
-</table>
-</div>
-
-
-
-[/#escape]

@@ -31,7 +31,7 @@ public class LoginController {
 			user.setUserName(userName);
 			
 			request.getSession().setAttribute("currentUser", user);
-			modelAndView.setView(new RedirectView("/Football"));
+			modelAndView.setView(new RedirectView("/"));
 		}
 		
 		return modelAndView;

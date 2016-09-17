@@ -30,11 +30,19 @@ public abstract class IMBaseDAO<T extends AbstractModel>
 
 	@Override
 	public T saveOrUpdate(T model) {
+		boolean exists=false;
 		if (model.getId() <= 0) {
 			model.setId(ID.getAndIncrement());
 		}
-
-		models.put(model.getId(), model);
+		for (Map.Entry<Long, T> entry : models.entrySet())
+		{
+			if(model.equals(entry.getValue())){
+				exists = true;
+			}
+		}
+		if(!exists){
+			models.put(model.getId(), model);
+		}
 		return model;
 	}
 

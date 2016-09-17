@@ -105,6 +105,77 @@ public class Football extends AbstractModel{
 		this.matchTitle = matchTitle;
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		long temp;
+		temp = Double.doubleToLongBits(aOrDraw);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(aWin);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + ((awayTeam == null) ? 0 : awayTeam.hashCode());
+		temp = Double.doubleToLongBits(draw);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(hOrDraw);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(hOra);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(hWin);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + ((homeTeam == null) ? 0 : homeTeam.hashCode());
+		result = prime * result + id;
+		result = prime * result + ((matchDate == null) ? 0 : matchDate.hashCode());
+		result = prime * result + ((matchTitle == null) ? 0 : matchTitle.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Football other = (Football) obj;
+		if (Double.doubleToLongBits(aOrDraw) != Double.doubleToLongBits(other.aOrDraw))
+			return false;
+		if (Double.doubleToLongBits(aWin) != Double.doubleToLongBits(other.aWin))
+			return false;
+		if (awayTeam == null) {
+			if (other.awayTeam != null)
+				return false;
+		} else if (!awayTeam.equals(other.awayTeam))
+			return false;
+		if (Double.doubleToLongBits(draw) != Double.doubleToLongBits(other.draw))
+			return false;
+		if (Double.doubleToLongBits(hOrDraw) != Double.doubleToLongBits(other.hOrDraw))
+			return false;
+		if (Double.doubleToLongBits(hOra) != Double.doubleToLongBits(other.hOra))
+			return false;
+		if (Double.doubleToLongBits(hWin) != Double.doubleToLongBits(other.hWin))
+			return false;
+		if (homeTeam == null) {
+			if (other.homeTeam != null)
+				return false;
+		} else if (!homeTeam.equals(other.homeTeam))
+			return false;
+		if (id != other.id)
+			return false;
+		if (matchDate == null) {
+			if (other.matchDate != null)
+				return false;
+		} else if (!matchDate.equals(other.matchDate))
+			return false;
+		if (matchTitle == null) {
+			if (other.matchTitle != null)
+				return false;
+		} else if (!matchTitle.equals(other.matchTitle))
+			return false;
+		return true;
+	}
+
 	public LocalDate getMatchDate() {
 		return matchDate;
 	}

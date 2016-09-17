@@ -11,18 +11,18 @@ import ro.sci.starttobet.service.FootballService;
 import ro.sci.starttobet.service.JsonService;
 
 @Controller
-@RequestMapping("/football")
+@RequestMapping("/tennis")
 @RestController
-public class FootballController{
+public class TennisController{
 	
-	@Autowired
-	private FootballService footballService;
+	//@Autowired
+	//TODO private TennisService tennisService;
 	
 	@Autowired
 	private SecurityService securityService;
 	
-	@Autowired
-	private JsonService jsonService;
+	//@Autowired
+	//TODO private JsonService jsonService;
 	
 /*	@RequestMapping(value ="match/list")
 	public ModelAndView list() throws Exception {
@@ -33,9 +33,8 @@ public class FootballController{
 	
 	@RequestMapping("") 
 	public ModelAndView showFootball() throws Exception {
-		jsonService.scanForFiles();
-		ModelAndView modelAndView = new ModelAndView("match/list");
-		modelAndView.addObject("matches", footballService.listAll());
+		ModelAndView modelAndView = new ModelAndView("match/tennis");
+		//modelAndView.addObject("matches", footballService.listAll());
 		modelAndView.addObject("currentUser", securityService.getCurrentUser());
 		return modelAndView;
 	}

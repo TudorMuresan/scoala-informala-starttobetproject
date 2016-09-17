@@ -31,7 +31,7 @@
           <img src="http://www.clipartkid.com/images/201/kicking-soccer-ball-clip-art-clipart-panda-free-clipart-images-4YnTr3-clipart.png" class="img-responsive" alt="" />
           
         <div class="login-register">
-			<a href="/Football">Back to Games!</a>
+			<a href="/football">Back to Games!</a>
 		</div>
 		
           <input type="name" name="name" placeholder="Username" required class="form-control input-lg" />
