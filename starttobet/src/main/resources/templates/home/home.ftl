@@ -14,12 +14,67 @@
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="[@spring.url '/js/bootstrap.min.js' /] "></script>
     <link  href="[@spring.url '/maxcdn/3.3.7/css/bootstrap.min.css' /]" rel="stylesheet">
-    <link  href="[@spring.url '/css/font-awesome.min.css' /]" rel="stylesheet">
     
     <link  href="[@spring.url '/css/bootstrap.min.css' /]" rel="stylesheet">
     <link  href="[@spring.url '/css/ionicons.min.css' /]" rel="stylesheet">
-    <script src="[@spring.url '/js/angular.js' /] "></script>
+	
+	<script>
+	function searchViaAjax() {
 
+		var search = {}
+		search["username"] = $("#username").val();
+		search["email"] = $("#email").val();
+
+		$.ajax({
+			type : "GET",
+			url : "footballMatches",
+			success : function(response) {
+				
+				var $result = $(response).filter('#matchesDiv');
+				console.log("SUCCESS: ", $result);
+				$('#matchesDiv').replaceWith($result);
+				
+			},
+		});
+
+	}</script>
+	<script>
+		function addEventToReceipt(buttonValue, prediction ,mTitle) {
+		 	var res;
+		 	var exists = false;
+			$('td:first-child').each(function() {
+				res = $(this).text().slice(0,$(this).text().length-1);
+			    
+			    if(mTitle==res){
+			   	 	console.log(res);
+			   	 	exists = true;
+			    }
+			});
+			
+			
+		
+			if(exists == false){
+				$('#recTable tr:last').before('<tr><td>' + mTitle + '<button type="button" class="btn btn-default btn-xs pull-right" onClick="$(this).parent().parent().remove();">X</button></td><td>' + prediction + '</td><td>' + buttonValue + '</td>');
+				$('#receptDiv').show();
+			}
+			
+		}
+	</script>
+	<script>
+		function youFunction(){	
+		$('#myTotalValue').on('input',function(e){
+	     console.log(this.value);
+	    });
+	    }
+	</script>
+	
+	<script>
+		$(document).ready(function(){    
+	    $('#matchesDiv').hide();
+	    $('#receptDiv').hide();
+	    
+	});
+	</script>
 </head>
 
 <style>
@@ -79,6 +134,7 @@
 	
 	a {
 	    text-decoration: none !important;
+	    cursor: pointer;
 	}
 	a.clickable { color: inherit; }
 	a.clickable:hover { text-decoration:none; }
@@ -111,7 +167,7 @@
      
       <ul class="nav navbar-nav navbar-right">
       	<li>[#if currentUser??]
-      		<a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-user"> ${currentUser.userName!''}</span></a>
+      		<a class="dropdown-toggle" data-toggle="dropdown" href=""><span class="glyphicon glyphicon-user"> ${currentUser.userName!''}</span></a>
       		<ul class="dropdown-menu">
 	            <li><a href="#">Sign out</a></li>
 	          </ul>
@@ -129,33 +185,7 @@
 </nav>
 
 
-<!--
-<div class="ui-layout-west hidden-phone hidden-tablet ui-layout-pane ui-layout-pane-west" style="display: block; position: absolute; margin: 0px; left: 2px; right: auto; top: 55px; bottom: 349px; height: 562px; z-index: 0; width: 242px; visibility: visible;" id="menu">
-	<div class="accordion" id="acc">
-        <div class="accordion-group">
-            <div class="accordion-heading">
-	            <button type="button" class="btn btn-default btn-lg btn-block" a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#acc"  title="All Sports" href="#resources">
-	            <h2><span class="fa fa-soccer-ball-o pull-left"></span>Sports</h2></a></button>     	
-            </div>
-            
-            <div id="resources" class="accordion-body collapse" style="height: auto;">
-                <div class="accordion-inner">
-                    <ul class="nav" style="padding-left:0px;">
-	                    <a class="btn btn-info btn-lg btn-block" href="/football">
-	                    <li>Football</li></a>
-	                    
-	                    <a class="btn btn-info btn-lg btn-block" href="/tennis">
-	                    <li>Tennis</li></a>
-                    </ul>
-                </div>
-            </div>
-        </div>
- 	</div>
-</div>
--->
-
 <div class="container2">
-    
         <div class="col-sm-3 col-md-3">
             <div class="panel-group" id="accordion" >
                 <div class="panel panel-default">
@@ -165,12 +195,11 @@
                             </span>   Football</a>
                         </h4>
                     </div>
-                    
                     <div id="collapseOne" class="panel-collapse collapse in">
                         <div class="panel-body">
                            <ul class="nav" style="padding-left:0px;">
                                 <li>
-                                    <a href="/football">Premier League</a>
+                                    <a clickable onclick="searchViaAjax()">Premier League</a>
                                 </li>
                                 <li>
                                     <a href="http://www.jquery2dotnet.com">Primera Division</a>
@@ -226,9 +255,139 @@
                         </div>
                     </div>
                 </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading clickable">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" data-target="#collapseFour"><span class="ion-ios-baseball">
+                            </span>   Baseball</a>
+                        </h4>
+                    </div>
+                    <div id="collapseFour" class="panel-collapse collapse">
+                        <div class="panel-body">
+                          <ul class="nav" style="padding-left:0px;">
+                               <li>
+                                    <a href="http://www.jquery2dotnet.com">MLB</a>
+                               </li>
+                                 <li>
+                                    <a href="http://www.jquery2dotnet.com">LMB</a>
+                               </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                 <div class="panel panel-default">
+                    <div class="panel-heading clickable">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" data-target="#collapseFive"><span class="ion-ios-americanfootball">
+                            </span>   American Football</a>
+                        </h4>
+                    </div>
+                    <div id="collapseFive" class="panel-collapse collapse">
+                        <div class="panel-body">
+                          <ul class="nav" style="padding-left:0px;">
+                               <li>
+                                    <a href="http://www.jquery2dotnet.com">CFL</a>
+                               </li>
+                                 <li>
+                                    <a href="http://www.jquery2dotnet.com">NFL</a>
+                               </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
    
 </div>
+
+
+
+[#escape x as x?html]
+
+
+  <style>
+	table, th, td {
+    	border-collapse: collapse;
+	}
+	
+	th, td {
+    padding: 9px;
+	}
+	tr, td, th{
+		border: 1px solid #aaa;
+	}
+	.table-bordered2 {
+	  border: 1px solid #aaa;
+	}
+  </style>
+
+
+
+ <div id="matchesDiv" class="table-responsive">
+ 	<div class="panel panel-default">
+    	<div class="panel-heading text-center"><b>Premier League</b></div>
+ 			<table class="table table-nonfluid table-bordered2 table-striped table-condense">
+				  <thead class="thead-default">
+					<tr>
+						<th><p align="center">Date</th>
+						<th><p align="center">Match Title</th>
+						<th><p align="center">1</th>
+						<th><p align="center">2</th>
+						<th><p align="center">x</th>
+						<th><p align="center">1x</th>
+						<th><p align="center">x2</th>
+						<th><p align="center">12</th>
+						
+					</tr>
+					 <thead> <tbody>
+					<!-- begin iteration -->
+					[#if matches??]
+						[#list matches as match] 
+							<tr>
+								<td align="center">${match.matchDate}</td>
+								<td align="center">${match.matchTitle}</td>
+								<td><button type="button" class="btn btn-info center-block" onclick="addEventToReceipt('${match.hWin?string["0.00"]}','1','${match.matchTitle}')">${match.hWin?string["0.00"]}</button></td>
+								<td><button type="button" class="btn btn-info center-block" onclick="addEventToReceipt('${match.aWin?string["0.00"]}','2','${match.matchTitle}')">${match.aWin?string["0.00"]}</button></td>
+								<td><button type="button" class="btn btn-info center-block" onclick="addEventToReceipt('${match.draw?string["0.00"]}','X','${match.matchTitle}')">${match.draw?string["0.00"]}</button></td>
+								<td><button type="button" class="btn btn-info center-block" onclick="addEventToReceipt('${match.hOrDraw?string["0.00"]}','1X','${match.matchTitle}')">${match.hOrDraw?string["0.00"]}</button></td>
+								<td><button type="button" class="btn btn-info center-block" onclick="addEventToReceipt('${match.aOrDraw?string["0.00"]}','X2','${match.matchTitle}')">${match.aOrDraw?string["0.00"]}</button></td>
+								<td><button type="button" class="btn btn-info center-block" onclick="addEventToReceipt('${match.hOra?string["0.00"]}','12','${match.matchTitle}')">${match.hOra?string["0.00"]}</button></td>				
+							</tr>
+						[/#list]
+					[/#if]
+				<!-- end iteration -->
+ 				</tbody>
+			</table>
+ 		</div>
+ 	</div>
+ </div>
+
+[/#escape]
+
+
+<div id="receptDiv" class="table-responsive">
+<div class="col-sm-3 col-md-5">
+ 	<div class="panel panel-default">
+    	<div class="panel-heading text-center"><b>Your Matches</b></div>
+ 			<table id ="recTable" class="table table-nonfluid table-bordered2 table-striped table-condense">
+				  <thead class="thead-default">
+					<tr>
+						<th><p align="center">Match Title</th>
+						<th><p align="center">Prediction</th>
+						<th><p align="center">Odd</th>
+						
+					</tr>
+					 <thead> 
+					 <tbody>
+						<td align="left">Your bet
+     					
+						<input id="myTotalValue" onchange="youFunction();"
+onkeyup="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" type="text" placeholder="Place your bet!"></td>
+ 				</tbody>
+			</table>
+ 		</div>
+ 	</div>
+ </div>
+
 
 
