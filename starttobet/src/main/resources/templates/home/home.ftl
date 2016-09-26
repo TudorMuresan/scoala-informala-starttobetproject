@@ -27,7 +27,7 @@
 
 		$.ajax({
 			type : "GET",
-			url : "footballMatches",
+			url : "football",
 			success : function(response) {
 				
 				var $result = $(response).filter('#matchesDiv');
@@ -46,7 +46,6 @@
 				res = $(this).text().slice(0,$(this).text().length-1);
 			    
 			    if(mTitle==res){
-			   	 	console.log(res);
 			   	 	exists = true;
 			    }
 			});
@@ -54,17 +53,86 @@
 			
 		
 			if(exists == false){
-				$('#recTable tr:last').before('<tr><td>' + mTitle + '<button type="button" class="btn btn-default btn-xs pull-right" onClick="$(this).parent().parent().remove();">X</button></td><td>' + prediction + '</td><td>' + buttonValue + '</td>');
+				
+				$('#recTable tr:last').prev().prev().before('<tr><td>' + mTitle + '<button type="button" class="btn btn-default btn-xs pull-right" onClick="$(this).parent().parent().remove();">X</button></td><td>' + prediction + '</td><td>' + buttonValue + '</td>');
 				$('#receptDiv').show();
+				var floatRegex = /^((\d+(\.\d *)?)|((\d*\.)?\d+))$/;
+		     	var totalOdd=1;
+		     	var totalMatches =0;
+		     	$("#receptDiv td:first-child").not(":last").next().next().each(function() {
+		     		
+		     		res = $(this).text();
+		     	
+		     		
+		     		if(floatRegex.test(res)) {
+		     			totalMatches++;
+						totalOdd *=res;
+					   
+					}
+		     		
+				});
+				var lastRow = $('#recTable tr:last');
+		     	lastRow.show();
+		     	
+		     	setRowTotalOdd(lastRow,totalOdd.toFixed(2));
+	     		setTotalMatches(lastRow,totalMatches);
+	     		
 			}
 			
 		}
 	</script>
 	<script>
-		function youFunction(){	
-		$('#myTotalValue').on('input',function(e){
-	     console.log(this.value);
-	    });
+	
+		function saveReceipt()
+		{
+		   //todo save receipt
+		};
+		
+		function setRowTotalOdd(rowId, newValue)
+		{
+		    rowId.find('td:first-child').next().html(newValue);
+		};
+		
+		function setTotalMatches(rowId, newValue)
+		{
+		    rowId.find('td:first-child').html(newValue);
+		};
+		
+		function setTotalEarnings(rowId, newValue)
+		{
+		    rowId.find('td:first-child').next().next().html(newValue);
+		};
+		
+		function updateInput(){	
+		
+		$('#myTotalValue').keyup(function(e){
+		     	var floatRegex = /^((\d+(\.\d *)?)|((\d*\.)?\d+))$/;
+		     	var totalOdd=1;
+		     	var totalMatches =0;
+		     	var currentValue = $(this).val();
+		     	console.log(currentValue);
+		     	$('#placeButton').show();
+		     	if(currentValue.length<1){
+		     		$('#placeButton').hide();
+		     	}
+		     	$("#receptDiv td:first-child").not(":last").next().next().each(function() {
+		     		
+		     		res = $(this).text();
+		     		if(floatRegex.test(res)) {
+		     			totalMatches++;
+						totalOdd *=res;
+					   
+					}
+		     		
+				});
+				var lastRow = $('#recTable tr:last');
+		     	lastRow.show();
+		     	
+		     	setRowTotalOdd(lastRow,totalOdd.toFixed(2));
+	     		setTotalMatches(lastRow,totalMatches);
+	     		setTotalEarnings(lastRow,(currentValue * totalOdd).toFixed(2));
+		     		
+		    });
 	    }
 	</script>
 	
@@ -72,6 +140,8 @@
 		$(document).ready(function(){    
 	    $('#matchesDiv').hide();
 	    $('#receptDiv').hide();
+	    $('#recTable tr:last').hide();
+	    $('#placeButton').hide();
 	    
 	});
 	</script>
@@ -138,6 +208,8 @@
 	}
 	a.clickable { color: inherit; }
 	a.clickable:hover { text-decoration:none; }
+	
+}
 	
 </style>
 <body>
@@ -366,9 +438,9 @@
 
 
 <div id="receptDiv" class="table-responsive">
-<div class="col-sm-3 col-md-5">
- 	<div class="panel panel-default">
-    	<div class="panel-heading text-center"><b>Your Matches</b></div>
+<div class="col-sm-3 col-md-9">
+ 	<div class="panel panel-default"> 
+    	<div class="panel-heading text-center" ><b>Your Matches</b></div>
  			<table id ="recTable" class="table table-nonfluid table-bordered2 table-striped table-condense">
 				  <thead class="thead-default">
 					<tr>
@@ -378,12 +450,19 @@
 						
 					</tr>
 					 <thead> 
-					 <tbody>
-						<td align="left">Your bet
+					 	<td align="center" style="background-color: #e4e5e5;">
+					 	<button id="placeButton" class="btn btn-success btn-md pull-center">Place Bet!</button></td>
+						<td align="right" colspan="2" ><b>Your bet</b>
      					
-						<input id="myTotalValue" onchange="youFunction();"
-onkeyup="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" type="text" placeholder="Place your bet!"></td>
- 				</tbody>
+						<input id="myTotalValue" style="background-color: #ebf0f0;" onchange="updateInput();" onkeyup="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" type="text" placeholder="Place your bet!"></td>
+					<tr>
+						<td align="center" style="background-color: #45b3e0;"><b>Total Matches</b>
+						<td align="center" style="background-color: #45b3e0;"><b>Total Odd</b>
+						<td align="center" style="background-color: #45b3e0;"><b>Total Earnings</b></tr>
+					<tr>
+						<td align="center" style="background-color: #ebf0f0;"><b>1</b>
+						<td align="center" style="background-color: #ebf0f0;"><b>2</b>
+						<td align="center" style="background-color: #ebf0f0;"><b>N/A</b></tr>
 			</table>
  		</div>
  	</div>
