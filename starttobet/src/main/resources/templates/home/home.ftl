@@ -3,20 +3,21 @@
 <head>
  	<meta charset="utf-8">
  	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>StartToBet</title>
-    <link  href="[@spring.url '/css/bootstrap.min.css' /]" rel="stylesheet">
+    
 	
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="[@spring.url '/js/bootstrap.js' /] "></script>
+    
     
     <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="[@spring.url '/js/bootstrap.min.js' /] "></script>
-    <link  href="[@spring.url '/maxcdn/3.3.7/css/bootstrap.min.css' /]" rel="stylesheet">
     
-    <link  href="[@spring.url '/css/bootstrap.min.css' /]" rel="stylesheet">
-    <link  href="[@spring.url '/css/ionicons.min.css' /]" rel="stylesheet">
+    
+    <link  href="[@spring.url '/maxcdn/3.3.7/css/bootstrap.css' /]" rel="stylesheet">
+    <link  href="[@spring.url '/css/bootstrap.css' /]" rel="stylesheet">
+    <link  href="[@spring.url '/css/ionicons.css' /]" rel="stylesheet">
 	
 	<script>
 	function searchViaAjax() {
@@ -33,32 +34,44 @@
 				var $result = $(response).filter('#matchesDiv');
 				console.log("SUCCESS: ", $result);
 				$('#matchesDiv').replaceWith($result);
-				
+				updateFields();
 			},
 		});
 
 	}</script>
 	<script>
-		function addEventToReceipt(buttonValue, prediction ,mTitle) {
+		function addEventToReceipt(buttonValue, prediction ,mTitle, buttonId) {
 		 	var res;
 		 	var exists = false;
+		 	var buttonGroup = buttonId.split("_");
+	 		window.scrollTo(0,document.body.scrollHeight);
+		 	$("button").each(function(e) {
+				var currentButtonSelected = this.id.split("_");
+			  	if(currentButtonSelected[0]===buttonGroup[0]){
+			  	$(this).prop('disabled',true);
+			  }			  
+			});
+			
 			$('td:first-child').each(function() {
 				res = $(this).text().slice(0,$(this).text().length-1);
-			    
+			   
+		 	
 			    if(mTitle==res){
 			   	 	exists = true;
 			    }
 			});
 			
-			
-		
 			if(exists == false){
-				
-				$('#recTable tr:last').prev().prev().before('<tr><td>' + mTitle + '<button type="button" class="btn btn-default btn-xs pull-right" onClick="$(this).parent().parent().remove();">X</button></td><td>' + prediction + '</td><td>' + buttonValue + '</td>');
+			
+				$('#recTable tr:last').prev().prev().before('<tr><td>' + mTitle + '<button type="button" class="btn btn-default btn-xs pull-right" onClick="$(this).parent().parent().remove(); updateFields()">X</button></td><td>' + prediction + '</td><td>' + buttonValue + '</td>');
 				$('#receptDiv').show();
+				
 				var floatRegex = /^((\d+(\.\d *)?)|((\d*\.)?\d+))$/;
 		     	var totalOdd=1;
 		     	var totalMatches =0;
+		     	var currentValue = $('#myTotalValue').val();
+		     	var lastRow = $('#recTable tr:last');
+		     	
 		     	$("#receptDiv td:first-child").not(":last").next().next().each(function() {
 		     		
 		     		res = $(this).text();
@@ -71,21 +84,126 @@
 					}
 		     		
 				});
-				var lastRow = $('#recTable tr:last');
+				if($('#myTotalValue').val().length >0){
+					$('#placeButton').show();
+				}
+				
+				
+				
 		     	lastRow.show();
 		     	
 		     	setRowTotalOdd(lastRow,totalOdd.toFixed(2));
 	     		setTotalMatches(lastRow,totalMatches);
-	     		
+	     		setTotalEarnings(lastRow,(currentValue * totalOdd).toFixed(2));
 			}
 			
 		}
 	</script>
 	<script>
+		function updateFields()
+		{
+			var floatRegex = /^((\d+(\.\d *)?)|((\d*\.)?\d+))$/;
+	     	var totalOdd=1;
+	     	var totalMatches =0;
+	     	var lastRow = $('#recTable tr:last');
+	     	var currentValue = $('#myTotalValue').val();
+	     	$("button").each(function(e) {
+	     		$(this).prop('disabled',false);
+	     	});
+	 		$("#receptDiv td:first-child").not(":last").each(function() {
+	 			var resTemp = $(this).text();
+	 			var n = resTemp.includes("VS");
+	 			if(n==true){
+	 				resFinal = resTemp.slice(0,resTemp.length-1);
+	 				
+	 				$("button").each(function(e) {
+	 				
+	 				var currentButtonSelected = this.id.split("_");
+	 				
+					if(resFinal==currentButtonSelected[0]){
+						console.log(currentButtonSelected[0] + "   " + resFinal);
+						$(this).prop('disabled',true);
+					  }	
+					});
+	 			}
+	 			
+	 		});
+		 	
+	     	$("#receptDiv td:first-child").not(":last").next().next().each(function() {
+	     		
+	     		res = $(this).text();
+	     	
+	     		
+	     		if(floatRegex.test(res)) {
+	     			totalMatches++;
+					totalOdd *=res;
+				   
+				}
+	     		if(totalMatches==0){
+	     			$('#placeButton').hide();
+	     			
+	     		}
+			});
+			
+	     	lastRow.show();
+	     	
+	     	setRowTotalOdd(lastRow,totalOdd.toFixed(2));
+     		setTotalMatches(lastRow,totalMatches);
+     		if(totalMatches>0){
+     			setTotalEarnings(lastRow,(currentValue * totalOdd).toFixed(2));
+     		}else{
+     			setTotalEarnings(lastRow,'N/A - Please select at least one odd!');
+     		}  
+		};
 	
 		function saveReceipt()
 		{
-		   //todo save receipt
+			var tempValueAppend="";
+			var receiptDetails=[];
+			var pairValues=0;
+	     	var currentValue = $('#myTotalValue').val();
+	     	
+	 		$("#receptDiv td").not(":last").each(function() {
+	 			pairValues++;
+	 			var resTemp = $(this).text();
+	 			var splittedResult = resTemp.split("\n");
+	 			var splittedTempValue;
+	 			
+	 			if(pairValues==1){
+	 				tempValueAppend+=splittedResult[0].substr(0,splittedResult[0].length-1)+"_";
+	 			}else{
+	 				tempValueAppend+=splittedResult[0]+"_";
+	 			}
+	 			
+	 			if(pairValues==3){
+	 				pairValues=0;
+	 				tempValueAppend = tempValueAppend.substr(0,tempValueAppend.length-1);
+	 				splittedTempValue = tempValueAppend.split("_");
+	 				var n = splittedTempValue[0].includes("VS");
+	 				if(n==true){
+	 					console.log(currentValue);
+		 				resFinal = splittedTempValue;
+		 				receiptDetails.push(resFinal);
+		 				//console.log(receiptDetails);
+		 			}
+	 			
+	 				tempValueAppend="";
+	 			}
+	 			
+	 			
+	 			
+	 		});
+	 		
+	 		var myJson = JSON.stringify(receiptDetails);
+		  	$.ajax({
+			type : "POST",
+			url : "saveReceipt",
+			data: {recDetails: myJson, betValue:currentValue},
+            dataType: "json",
+			success : function() {
+				console.log('SUCCESS');
+				}
+			});
 		};
 		
 		function setRowTotalOdd(rowId, newValue)
@@ -110,8 +228,7 @@
 		     	var totalOdd=1;
 		     	var totalMatches =0;
 		     	var currentValue = $(this).val();
-		     	console.log(currentValue);
-		     	$('#placeButton').show();
+		     	
 		     	if(currentValue.length<1){
 		     		$('#placeButton').hide();
 		     	}
@@ -130,8 +247,14 @@
 		     	
 		     	setRowTotalOdd(lastRow,totalOdd.toFixed(2));
 	     		setTotalMatches(lastRow,totalMatches);
-	     		setTotalEarnings(lastRow,(currentValue * totalOdd).toFixed(2));
-		     		
+	     		if(totalMatches>0){
+     				setTotalEarnings(lastRow,(currentValue * totalOdd).toFixed(2));
+	     		}else{
+	     			setTotalEarnings(lastRow,'N/A - Please select at least one odd!');
+	     		}  
+	     		if(totalMatches>0){
+	     			$('#placeButton').show();
+	     		}
 		    });
 	    }
 	</script>
@@ -389,7 +512,9 @@
 		border: 1px solid #aaa;
 	}
 	.table-bordered2 {
-	  border: 1px solid #aaa;
+	   border: 2px solid rgba(211, 211, 211, .5);
+	  
+	  //background-color: rgba(211, 211, 211, .5);
 	}
   </style>
 
@@ -418,12 +543,12 @@
 							<tr>
 								<td align="center">${match.matchDate}</td>
 								<td align="center">${match.matchTitle}</td>
-								<td><button type="button" class="btn btn-info center-block" onclick="addEventToReceipt('${match.hWin?string["0.00"]}','1','${match.matchTitle}')">${match.hWin?string["0.00"]}</button></td>
-								<td><button type="button" class="btn btn-info center-block" onclick="addEventToReceipt('${match.aWin?string["0.00"]}','2','${match.matchTitle}')">${match.aWin?string["0.00"]}</button></td>
-								<td><button type="button" class="btn btn-info center-block" onclick="addEventToReceipt('${match.draw?string["0.00"]}','X','${match.matchTitle}')">${match.draw?string["0.00"]}</button></td>
-								<td><button type="button" class="btn btn-info center-block" onclick="addEventToReceipt('${match.hOrDraw?string["0.00"]}','1X','${match.matchTitle}')">${match.hOrDraw?string["0.00"]}</button></td>
-								<td><button type="button" class="btn btn-info center-block" onclick="addEventToReceipt('${match.aOrDraw?string["0.00"]}','X2','${match.matchTitle}')">${match.aOrDraw?string["0.00"]}</button></td>
-								<td><button type="button" class="btn btn-info center-block" onclick="addEventToReceipt('${match.hOra?string["0.00"]}','12','${match.matchTitle}')">${match.hOra?string["0.00"]}</button></td>				
+								<td><button id="${match.matchTitle}_1" type="button" class="btn btn-info center-block" onclick="addEventToReceipt('${match.hWin?string["0.00"]}','1','${match.matchTitle}', this.id)">${match.hWin?string["0.00"]}</button></td>
+								<td><button id="${match.matchTitle}_2" type="button" class="btn btn-info center-block" onclick="addEventToReceipt('${match.aWin?string["0.00"]}','2','${match.matchTitle}', this.id)">${match.aWin?string["0.00"]}</button></td>
+								<td><button id="${match.matchTitle}_X" type="button" class="btn btn-info center-block" onclick="addEventToReceipt('${match.draw?string["0.00"]}','X','${match.matchTitle}', this.id)">${match.draw?string["0.00"]}</button></td>
+								<td><button id="${match.matchTitle}_1X" type="button" class="btn btn-info center-block" onclick="addEventToReceipt('${match.hOrDraw?string["0.00"]}','1X','${match.matchTitle}', this.id)">${match.hOrDraw?string["0.00"]}</button></td>
+								<td><button id="${match.matchTitle}_X2" type="button" class="btn btn-info center-block" onclick="addEventToReceipt('${match.aOrDraw?string["0.00"]}','X2','${match.matchTitle}', this.id)">${match.aOrDraw?string["0.00"]}</button></td>
+								<td><button id="${match.matchTitle}_12" type="button" class="btn btn-info center-block" onclick="addEventToReceipt('${match.hOra?string["0.00"]}','12','${match.matchTitle}', this.id)">${match.hOra?string["0.00"]}</button></td>				
 							</tr>
 						[/#list]
 					[/#if]
@@ -438,7 +563,6 @@
 
 
 <div id="receptDiv" class="table-responsive">
-<div class="col-sm-3 col-md-9">
  	<div class="panel panel-default"> 
     	<div class="panel-heading text-center" ><b>Your Matches</b></div>
  			<table id ="recTable" class="table table-nonfluid table-bordered2 table-striped table-condense">
@@ -451,7 +575,7 @@
 					</tr>
 					 <thead> 
 					 	<td align="center" style="background-color: #e4e5e5;">
-					 	<button id="placeButton" class="btn btn-success btn-md pull-center">Place Bet!</button></td>
+					 	<button id="placeButton" class="btn btn-success btn-md pull-center" onclick="saveReceipt()">Place Bet!</button></td>
 						<td align="right" colspan="2" ><b>Your bet</b>
      					
 						<input id="myTotalValue" style="background-color: #ebf0f0;" onchange="updateInput();" onkeyup="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" type="text" placeholder="Place your bet!"></td>
@@ -465,7 +589,6 @@
 						<td align="center" style="background-color: #ebf0f0;"><b>N/A</b></tr>
 			</table>
  		</div>
- 	</div>
  </div>
 
 
