@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import ro.sci.starttobet.service.SecurityService;
 import ro.sci.starttobet.service.FootballService;
 import ro.sci.starttobet.service.JsonService;
 
@@ -22,22 +21,39 @@ public class FootballController{
 	private FootballService footballService;
 	
 	@Autowired
-	private SecurityService securityService;
-	
-	@Autowired
 	private JsonService jsonService;
 	
-/*	@RequestMapping(value ="match/list")
-	public ModelAndView list() throws Exception {
-		ModelAndView modelAndView = new ModelAndView("match/list");
+	@RequestMapping(value = "/PremierLeague",method = RequestMethod.GET) 
+	public ModelAndView showPremierLeagueMatches() throws IOException{
+		jsonService.emptyMap();//TODO delete this when implementing the JDBC
+		jsonService.scanForFiles("Football","PremierLeague");
+		ModelAndView modelAndView = new ModelAndView("home/home");
 		modelAndView.addObject("matches", footballService.listAll());
 		return modelAndView;
-	}*/
+	}
 	
+	@RequestMapping(value = "/LaLiga",method = RequestMethod.GET) 
+	public ModelAndView showPrimeraDivisionMatches() throws IOException{
+		jsonService.emptyMap();//TODO delete this when implementing the JDBC
+		jsonService.scanForFiles("Football","LaLiga");
+		ModelAndView modelAndView = new ModelAndView("home/home");
+		modelAndView.addObject("matches", footballService.listAll());
+		return modelAndView;
+	}
 	
-	@RequestMapping(value = "",method = RequestMethod.GET) 
-	public ModelAndView showMatches() throws IOException{
-		jsonService.scanForFiles();
+	@RequestMapping(value = "/LigueOne",method = RequestMethod.GET) 
+	public ModelAndView showLigueOneMatches() throws IOException{
+		jsonService.emptyMap();//TODO delete this when implementing the JDBC
+		jsonService.scanForFiles("Football","LigueOne");
+		ModelAndView modelAndView = new ModelAndView("home/home");
+		modelAndView.addObject("matches", footballService.listAll());
+		return modelAndView;
+	}
+	
+	@RequestMapping(value = "/Bundesliga",method = RequestMethod.GET) 
+	public ModelAndView showBundesligaMatches() throws IOException{
+		jsonService.emptyMap();//TODO delete this when implementing the JDBC
+		jsonService.scanForFiles("Football","Bundesliga");
 		ModelAndView modelAndView = new ModelAndView("home/home");
 		modelAndView.addObject("matches", footballService.listAll());
 		return modelAndView;

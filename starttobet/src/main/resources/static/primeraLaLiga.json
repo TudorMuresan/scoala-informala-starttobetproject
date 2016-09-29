@@ -1,0 +1,201 @@
+{ 
+  "sportType" : "Football",
+   "name": "Spanish LaLiga 2016/17",
+  "rounds": [
+    {
+      "name": "Matchday 1",
+      "matches": [
+        {
+          "date": "2016-08-22",
+          "team1": {
+            "key": "valencia",
+            "name": "Valencia",
+            "code": "VAL"
+          },
+          "team2": {
+            "key": "laspalmas",
+            "name": "Las Palmas",
+            "code": "PLM"
+          },
+          "hWin": 1.73,
+          "aWin": 5.00,
+          "draw": 3.80,
+          "hOrDraw": 1.18,
+          "aOrDraw": 2.15,
+          "hOra": 1.29
+        },
+        {
+          "date": "2016-08-22",
+          "team1": {
+            "key": "celtavigo",
+            "name": "Celta Vigo",
+            "code": "CEL"
+          },
+          "team2": {
+            "key": "leganes",
+            "name": "Leganes",
+            "code": "LEG"
+          },
+          "hWin": 1.62,
+          "aWin": 6.00,
+          "draw": 3.80,
+          "hOrDraw": 1.14,
+          "aOrDraw": 2.30,
+          "hOra": 1.29
+        },
+        {
+          "date": "2016-08-21",
+          "team1": {
+            "key": "athleticomadrid",
+            "name": "Athletico Madrid",
+            "code": "ATM"
+          },
+          "team2": {
+            "key": "alaves",
+            "name": "Alaves",
+            "code": "ALV"
+          },
+          "hWin": 1.22,
+          "aWin": 15.00,
+          "draw": 6.00,
+          "hOrDraw": 1.04,
+          "aOrDraw": 4.33,
+          "hOra": 1.14
+        },
+        {
+          "date": "2016-08-21",
+          "team1": {
+            "key": "realsociedad",
+            "name": "Real Sociedad",
+            "code": "RSC"
+          },
+          "team2": {
+            "key": "realmadrid",
+            "name": "Real Madrid",
+            "code": "RMA"
+          },
+          "hWin": 5.25,
+          "aWin": 3.80,
+          "draw": 1.67,
+          "hOrDraw": 2.25,
+          "aOrDraw": 1.29,
+          "hOra": 1.18
+        },
+        {
+          "date": "2016-08-21",
+          "team1": {
+            "key": "gijon",
+            "name": "Gijon",
+            "code": "GIJ"
+          },
+          "team2": {
+            "key": "athleticobilbao",
+            "name": "Athletico Bilbao",
+            "code": "ATB"
+          },
+          "hWin": 4.20,
+          "aWin": 3.50,
+          "draw": 1.85,
+          "hOrDraw": 1.95,
+          "aOrDraw": 1.25,
+          "hOra": 1.30
+        },
+        {
+          "date": "2016-08-20",
+          "team1": {
+            "key": "sevilla",
+            "name": "Sevilla",
+            "code": "SVL"
+          },
+          "team2": {
+            "key": "espanyol",
+            "name": "Espanyol",
+            "code": "ESP"
+          },
+          "hWin": 1.67,
+          "aWin": 4.00,
+          "draw": 5.00,
+          "hOrDraw": 1.18,
+          "aOrDraw": 1.25,
+          "hOra": 2.25
+        },
+        {
+          "date": "2016-08-20",
+          "team1": {
+            "key": "granada",
+            "name": "Granada CF",
+            "code": "GRN"
+          },
+          "team2": {
+            "key": "villareal",
+            "name": "Villareal",
+            "code": "VIL"
+          },
+          "hWin": 2.63,
+          "aWin": 2.88,
+          "draw": 3.20,
+          "hOrDraw": 1.42,
+          "aOrDraw": 1.50,
+          "hOra": 1.36
+        },
+        {
+          "date": "2016-08-20",
+          "team1": {
+            "key": "barcelona",
+            "name": "Barcelona",
+            "code": "BCA"
+          },
+          "team2": {
+            "key": "betis",
+            "name": "Betis",
+            "code": "BET"
+          },
+          "hWin": 1.08,
+          "aWin": 29.00,
+          "draw": 11.00,
+          "hOrDraw": 1.01,
+          "aOrDraw": 8.50,
+          "hOra": 1.06
+        },
+        {
+          "date": "2016-08-19",
+          "team1": {
+            "key": "deportivo",
+            "name": "Dep. La Coruna",
+            "code": "DEP"
+          },
+          "team2": {
+            "key": "eibar",
+            "name": "Eibar",
+            "code": "EIB"
+          },
+          "hWin": 2.05,
+          "aWin": 3.80,
+          "draw": 3.40,
+          "hOrDraw": 1.29,
+          "aOrDraw": 1.80,
+          "hOra": 1.33
+        },
+        {
+          "date": "2016-08-19",
+          "team1": {
+            "key": "malaga",
+            "name": "Malaga",
+            "code": "MGA"
+          },
+          "team2": {
+            "key": "osasuna",
+            "name": "Osasuna",
+            "code": "OSA"
+          },
+          "hWin": 1.62,
+          "aWin": 6.00,
+          "draw": 3.75,
+          "hOrDraw": 1.14,
+          "aOrDraw": 2.30,
+          "hOra": 1.29
+        }
+      ]
+    }
+  ]
+ }

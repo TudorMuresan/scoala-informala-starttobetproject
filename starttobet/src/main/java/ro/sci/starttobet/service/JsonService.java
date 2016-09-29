@@ -6,16 +6,11 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import ro.sci.starttobet.domain.Football;
 
 @Component
 public class JsonService implements JsonEventsParser{
@@ -23,21 +18,32 @@ public class JsonService implements JsonEventsParser{
 	@Autowired
 	FootballParser footballParser;
 	
+	@Autowired
+	TennisParser tennisParser;
+	
+	@Autowired
+	FootballService footballService;
+	
 	private final File folder = new File("src/main/resources/static");
  	private final File[] listOfFiles = folder.listFiles();
 	
- 	public List<Object> getJsonData(String path) throws IOException{
+ 	public List<Object> getJsonData(String path,String sport, String league) throws IOException{
  		
  		String text = new String(Files.readAllBytes(Paths.get(folder.getPath() + "\\" +path)), StandardCharsets.UTF_8);
 		 JSONObject obj = new JSONObject(text);
-		 Object sportTypeIdentificator = obj.get("sportType");
 		 List<Object> result = null;
-		 if(((String)sportTypeIdentificator).equalsIgnoreCase("Football")){
-			 result = footballParser.parseFootballEvents(obj); 
+		 Object sportTypeIdentificator = obj.get("sportType");
+		 
+		 if(sport.equalsIgnoreCase("Football")){
+			 if(((String)sportTypeIdentificator).equalsIgnoreCase("Football")){
+				 result = footballParser.parseFootballEvents(obj,league); 
+			 }
 		 }
-		 else if(((String)sportTypeIdentificator).equalsIgnoreCase("Tennis")){
-			 //TODO tennis parsing 
-			 //return new FootballParser().parseFootballEvents(obj).toString();
+		 else if(sport.equalsIgnoreCase("Tennis")){
+			 if(((String)sportTypeIdentificator).equalsIgnoreCase("Tennis")){
+				 result = tennisParser.parseTennisEvents(obj,league); 
+			 }
+			 
 		 }else{
 			 System.out.println("No data to parse!");
 			 
@@ -45,11 +51,19 @@ public class JsonService implements JsonEventsParser{
 		 return result;
  	}
  	
+ 	public void emptyMap(){
+ 		try {
+			footballService.clearMap();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+ 	}
+ 	
 	@Override
-	public void scanForFiles() throws IOException {
+	public void scanForFiles(String sportType, String league) throws IOException {
 		for (File file : listOfFiles) {
 	 	    if (file.isFile()) {
-	 	    	getJsonData(file.getName());
+	 	    	getJsonData(file.getName(),sportType,league);
 	 	    }
 	 	}
 	}

@@ -1,0 +1,183 @@
+{ 
+  "sportType" : "Football",
+   "name": "German Bundesliga 2016/17",
+  "rounds": [
+    {
+      "name": "Matchday 1",
+      "matches": [
+        {
+          "date": "2016-08-28",
+          "team1": {
+            "key": "hoffenheim",
+            "name": "Hoffenheim",
+            "code": "HOF"
+          },
+          "team2": {
+            "key": "rbLeipzig",
+            "name": "RB Leipzig",
+            "code": "RBL"
+          },
+          "hWin": 2.45,
+          "aWin": 4.00,
+          "draw": 3.30,
+          "hOrDraw": 1.40,
+          "aOrDraw": 1.57,
+          "hOra": 1.34
+        },
+        {
+          "date": "2016-08-28",
+          "team1": {
+            "key": "herthaberlin",
+            "name": "Hertha Berlin",
+            "code": "HRT"
+          },
+          "team2": {
+            "key": "freiburg",
+            "name": "Freiburg",
+            "code": "FRB"
+          },
+          "hWin": 1.95,
+          "aWin": 4.00,
+          "draw": 3.40,
+          "hOrDraw": 1.25,
+          "aOrDraw": 1.85,
+          "hOra": 1.33
+        },
+        {
+          "date": "2016-08-27",
+          "team1": {
+            "key": "augsburg",
+            "name": "Augsburg",
+            "code": "AUG"
+          },
+          "team2": {
+            "key": "wolfsburg",
+            "name": "Wolfsburg",
+            "code": "WOB"
+          },
+          "hWin": 2.80,
+          "aWin": 2.60,
+          "draw": 3.25,
+          "hOrDraw": 1.53,
+          "aOrDraw": 1.44,
+          "hOra": 1.35
+        },
+        {
+          "date": "2016-08-27",
+          "team1": {
+            "key": "dortmund",
+            "name": "Dortmund",
+            "code": "DOR"
+          },
+          "team2": {
+            "key": "mainz",
+            "name": "Mainz",
+            "code": "MNZ"
+          },
+          "hWin": 1.29,
+          "aWin": 11.00,
+          "draw": 5.50,
+          "hOrDraw": 1.06,
+          "aOrDraw": 3.75,
+          "hOra": 1.17
+        },
+        {
+          "date": "2016-08-27",
+          "team1": {
+            "key": "eintrachtfrankfurt",
+            "name": "Eintracht Frankfurt",
+            "code": "EFR"
+          },
+          "team2": {
+            "key": "schalke",
+            "name": "Schalke",
+            "code": "SCH"
+          },
+          "hWin": 3.40,
+          "aWin": 2.15,
+          "draw": 3.40,
+          "hOrDraw": 1.73,
+          "aOrDraw": 1.33,
+          "hOra": 1.33
+        },
+        {
+          "date": "2016-08-13",
+          "team1": {
+            "key": "werderbremen",
+            "name": "Werder Bremen",
+            "code": "WBR"
+          },
+          "team2": {
+            "key": "fcbayernmunchen",
+            "name": "FC Bayern Munchen",
+            "code": "BAY"
+          },
+          "hWin": 4.00,
+          "aWin": 1.40,
+          "draw": 3.60,
+          "hOrDraw": 1.70,
+          "aOrDraw": 1.06,
+          "hOra": 1.20
+        },
+        {
+          "date": "2016-08-13",
+          "team1": {
+            "key": "hamburgersv",
+            "name": "Hamburger SV",
+            "code": "HAM"
+          },
+          "team2": {
+            "key": "ingolstadt",
+            "name": "Ingolstadt",
+            "code": "ING"
+          },
+          "hWin": 1.70,
+          "aWin": 3.20,
+          "draw": 3.25,
+          "hOrDraw": 1.18,
+          "aOrDraw": 1.80,
+          "hOra": 1.35
+        },
+        {
+
+          "date": "2016-08-27",
+          "team1": {
+            "key": "bmonchengladbach",
+            "name": "B. Monchengladbach",
+            "code": "BOM"
+          },
+          "team2": {
+            "key": "bayerleverkusen",
+            "name": "Bayer Leverkusen",
+            "code": "GUN"
+          },
+          "hWin": 2.40,
+          "aWin": 2.90,
+          "draw": 3.50,
+          "hOrDraw": 1.42,
+          "aOrDraw": 2.57,
+          "hOra": 1.30
+        },
+        {
+          "date": "2016-08-27",
+          "team1": {
+            "key": "fckoln",
+            "name": "FC Koln",
+            "code": "FCK"
+          },
+          "team2": {
+            "key": "darmstadt",
+            "name": "Darmstadt",
+            "code": "DRM"
+          },
+          "hWin": 1.53,
+          "aWin": 7.00,
+          "draw": 4.00,
+          "hOrDraw": 1.11,
+          "aOrDraw": 2.60,
+          "hOra": 1.25
+        }
+      ]
+    }
+  ]
+ }

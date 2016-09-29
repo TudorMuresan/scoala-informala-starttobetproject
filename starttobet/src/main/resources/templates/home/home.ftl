@@ -10,7 +10,8 @@
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="[@spring.url '/js/bootstrap.js' /] "></script>
-    
+    <!-- TweenMax includes TweenLite, TimelineLite, TimelineMax, EasePack,  RoundPropsPlugin and CSSPlugin -->
+	<script type="text/javascript" src="js/GSAP/TweenMax.min.js"></script>
     
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     
@@ -18,23 +19,42 @@
     <link  href="[@spring.url '/maxcdn/3.3.7/css/bootstrap.css' /]" rel="stylesheet">
     <link  href="[@spring.url '/css/bootstrap.css' /]" rel="stylesheet">
     <link  href="[@spring.url '/css/ionicons.css' /]" rel="stylesheet">
+	<link  href="[@spring.url '/css/buttonsClass.css' /]" rel="stylesheet">
+	 
 	
+ 
+ 
 	<script>
-	function searchViaAjax() {
-
-		var search = {}
-		search["username"] = $("#username").val();
-		search["email"] = $("#email").val();
+	function searchViaAjax(sport,league) {
 
 		$.ajax({
 			type : "GET",
-			url : "football",
+			url : sport + "/" + league,
 			success : function(response) {
+				console.log(response);
+				var $result;
+				if(sport ==='football'){
+					$result = $(response).filter('#matchesDiv');
+					$('#matchesDiv').replaceWith($result);
+					hideAllLoadedDivs();
+					$('#matchesDiv').show();
+					$('#offerHeader').text(league,"Bold");
+					$('#offerHeader').css("font-weight","Bold");
+					$('#offerHeader').css("font-size",14);
+					
+				}else if(sport ==='tennis'){
+					$result = $(response).filter('#tennisDiv');
+					$('#tennisDiv').replaceWith($result);
+					hideAllLoadedDivs();
+					$('#tennisDiv').show();
+					$('#offerHeaderT').text(league);
+					$('#offerHeaderT').css("font-weight","Bold");
+					$('#offerHeaderT').css("font-size",14);
+				}
 				
-				var $result = $(response).filter('#matchesDiv');
 				console.log("SUCCESS: ", $result);
-				$('#matchesDiv').replaceWith($result);
-				updateFields();
+				
+				updateFields("default");
 			},
 		});
 
@@ -44,105 +64,173 @@
 		 	var res;
 		 	var exists = false;
 		 	var buttonGroup = buttonId.split("_");
-	 		window.scrollTo(0,document.body.scrollHeight);
+		 	var totalMatches=0;
 		 	$("button").each(function(e) {
-				var currentButtonSelected = this.id.split("_");
-			  	if(currentButtonSelected[0]===buttonGroup[0]){
-			  	$(this).prop('disabled',true);
-			  }			  
-			});
-			
-			$('td:first-child').each(function() {
-				res = $(this).text().slice(0,$(this).text().length-1);
-			   
-		 	
-			    if(mTitle==res){
-			   	 	exists = true;
-			    }
-			});
-			
-			if(exists == false){
-			
-				$('#recTable tr:last').prev().prev().before('<tr><td>' + mTitle + '<button type="button" class="btn btn-default btn-xs pull-right" onClick="$(this).parent().parent().remove(); updateFields()">X</button></td><td>' + prediction + '</td><td>' + buttonValue + '</td>');
-				$('#receptDiv').show();
+		 		
+			  var currentButtonSelected = this.id.split("_");
+			  if(currentButtonSelected[0]===buttonGroup[0]){
+			  	  $(this).prop('disabled',true);			  	
+			  }	
+			  if(currentButtonSelected[1]===buttonGroup[1] && currentButtonSelected[0]===buttonGroup[0]){
+			 	
+			  	$(this).prop('disabled',false);
+			  	if($(this).hasClass("btn-info")){
+		 			$(this).removeClass("btn-info");
+		 			$(this).addClass("btn-success");
+		 			$(this).blur();
+		 			totalMatches++;
+		 			$('td:first-child').each(function() {
+						res = $(this).text().slice(0,$(this).text().length-1);
+				    	if(mTitle==res){
+				    		console.log(buttonId);
+				   			exists = true;
+						}
+					});
 				
-				var floatRegex = /^((\d+(\.\d *)?)|((\d*\.)?\d+))$/;
-		     	var totalOdd=1;
-		     	var totalMatches =0;
-		     	var currentValue = $('#myTotalValue').val();
-		     	var lastRow = $('#recTable tr:last');
-		     	
-		     	$("#receptDiv td:first-child").not(":last").next().next().each(function() {
-		     		
-		     		res = $(this).text();
-		     	
-		     		
-		     		if(floatRegex.test(res)) {
-		     			totalMatches++;
-						totalOdd *=res;
-					   
+					if(exists == false){
+						$('#recTable tr:last').prev().prev().before('<tr><td>' + mTitle + '<button type="button" class="btn btn-default btn-xs pull-right" onClick="$(this).parent().parent().remove(); updateFields($(this).parent().html())">X</button></td><td>' + prediction + '</td><td>' + buttonValue + '</td>');
+						
+						$('#receptDiv').show();
+					
+				 		var floatRegex = /^((\d+(\.\d *)?)|((\d*\.)?\d+))$/;
+			     		var totalOdd=1;
+			    		var totalMatches =0;
+			    		var currentValue = $('#myTotalValue').val();
+			     		var lastRow = $('#recTable tr:last');
+			     	
+			     		$("#receptDiv td:first-child").not(":last").next().next().each(function() {
+			     		
+			     			res = $(this).text();
+			     			if(floatRegex.test(res)) {
+			     				totalMatches++;
+								totalOdd *=res;
+							}
+			     		
+						});
+						if(totalMatches>0 && $('#myTotalValue').val().length >0){
+							$('#placeButton').show();
+						}
+			     		lastRow.show();
+			     	
+			     		setRowTotalOdd(lastRow,totalOdd.toFixed(2));
+		     			setTotalMatches(lastRow,totalMatches);
+		     			setTotalEarnings(lastRow,(currentValue * totalOdd).toFixed(2));
 					}
-		     		
-				});
-				if($('#myTotalValue').val().length >0){
-					$('#placeButton').show();
-				}
-				
-				
-				
-		     	lastRow.show();
-		     	
-		     	setRowTotalOdd(lastRow,totalOdd.toFixed(2));
-	     		setTotalMatches(lastRow,totalMatches);
-	     		setTotalEarnings(lastRow,(currentValue * totalOdd).toFixed(2));
-			}
+		 			
+			 	}
+				else{
+			 
+			 		totalMatches=0;
+			 		$(this).removeClass("btn-success");
+			 		$(this).addClass("btn-info");
+			 		
+			 		deleteFieldFromButton(currentButtonSelected[0]);
+			 		return false;
+			 	}	
+			}		  
+		});	
+	}
+	</script>
+	<script>
+		function resetPage(){
+			var lastRow = $('#recTable tr:last');
+			var selectedMatch;
+			$('#recTable tr').each(function(){
+		 		$("#receptDiv td:first-child").not(":last").each(function() {
+		 			selectedMatch = $(this).text().substr(0,$(this).text().length-1);
+		 			var n = selectedMatch.includes("VS");
+	 				if(n==true){
+	 					$(this).parent().remove();
+		 				updateFields(selectedMatch+'<');
+	 				}
+		 			
+		 		});
+			});
 			
+     		
+		
 		}
 	</script>
 	<script>
-		function updateFields()
+		function deleteFieldFromButton(currentMatch){
+			var selectedMatch;
+			var comparedMatch;
+			var isRemoved = false;
+			$('#recTable tr').each(function(){
+				
+		 		$("#receptDiv td:first-child").not(":last").each(function() {
+		 			selectedMatch = $(this).text().substr(0,$(this).text().length-1);
+		 			comparedMatch = currentMatch;
+		 			if(comparedMatch===selectedMatch){
+		 				if(isRemoved==false){
+		 					isRemoved = true;
+		 					$(this).parent().remove();
+		 					updateFields(currentMatch+'<');
+		 					
+		 				}
+		 			}
+		 		});
+			});
+		}
+	</script>
+	<script>
+		function updateFields(mesg)
 		{
+		
+			var removedMatch;
+			if(mesg.length>0){
+				removedMatch=mesg.split("<");
+			}
 			var floatRegex = /^((\d+(\.\d *)?)|((\d*\.)?\d+))$/;
 	     	var totalOdd=1;
 	     	var totalMatches =0;
 	     	var lastRow = $('#recTable tr:last');
 	     	var currentValue = $('#myTotalValue').val();
 	     	$("button").each(function(e) {
-	     		$(this).prop('disabled',false);
+	     		$(this).prop('disabled',false);     		
 	     	});
 	 		$("#receptDiv td:first-child").not(":last").each(function() {
 	 			var resTemp = $(this).text();
+	 			var refreshTemp = $(this).next().text();
 	 			var n = resTemp.includes("VS");
 	 			if(n==true){
+	 				
 	 				resFinal = resTemp.slice(0,resTemp.length-1);
 	 				
 	 				$("button").each(function(e) {
 	 				
-	 				var currentButtonSelected = this.id.split("_");
-	 				
-					if(resFinal==currentButtonSelected[0]){
-						console.log(currentButtonSelected[0] + "   " + resFinal);
-						$(this).prop('disabled',true);
-					  }	
+		 				var currentButtonSelected = this.id.split("_");
+		 				
+		 				if(removedMatch[0]===currentButtonSelected[0]){
+		 					
+		 					$(this).removeClass("btn-success");
+			 				$(this).addClass("btn-info");
+		 				}
+						if(resFinal==currentButtonSelected[0]){
+							
+							if($(this).hasClass("btn-info")){
+								$(this).prop('disabled',true);
+							}
+							if(refreshTemp===currentButtonSelected[1]){
+								$(this).removeClass("btn-info");
+			 					$(this).addClass("btn-success");
+			 					$(this).prop('disabled',false);
+							}
+						}
+						
 					});
 	 			}
 	 			
 	 		});
 		 	
 	     	$("#receptDiv td:first-child").not(":last").next().next().each(function() {
-	     		
 	     		res = $(this).text();
-	     	
-	     		
 	     		if(floatRegex.test(res)) {
 	     			totalMatches++;
 					totalOdd *=res;
 				   
 				}
-	     		if(totalMatches==0){
-	     			$('#placeButton').hide();
-	     			
-	     		}
+	     		
 			});
 			
 	     	lastRow.show();
@@ -152,6 +240,14 @@
      		if(totalMatches>0){
      			setTotalEarnings(lastRow,(currentValue * totalOdd).toFixed(2));
      		}else{
+     		$('#placeButton').hide();
+	     			$("button").each(function(a) {
+			     		if($(this).hasClass("btn-success") && this.id!='placeButton'){
+	 						$(this).removeClass("btn-success");
+		 					$(this).addClass("btn-info");
+	 					}	
+	 					
+			     	});
      			setTotalEarnings(lastRow,'N/A - Please select at least one odd!');
      		}  
 		};
@@ -204,7 +300,21 @@
 				console.log('SUCCESS');
 				}
 			});
+			
+			$('#receptDiv').fadeOut('slow', function() {
+			    resetPage();
+			    $("#mesaju").slideDown();  
+			    setTimeout(hideMesaj, 4000);
+			    
+			});
+
 		};
+		
+		function hideMesaj(){
+		 $( "#mesaju" ).fadeOut( "slow", function() {
+		    // Animation complete.
+		  });
+		}
 		
 		function setRowTotalOdd(rowId, newValue)
 		{
@@ -222,7 +332,7 @@
 		};
 		
 		function updateInput(){	
-		
+		console.log("ass");
 		$('#myTotalValue').keyup(function(e){
 		     	var floatRegex = /^((\d+(\.\d *)?)|((\d*\.)?\d+))$/;
 		     	var totalOdd=1;
@@ -260,14 +370,40 @@
 	</script>
 	
 	<script>
-		$(document).ready(function(){    
+		function hideAllLoadedDivs(){
+			$('#matchesDiv').hide();
+	    	$('#tennisDiv').hide();
+		}
+	</script>
+	<script>
+		$(document).ready(function(){  
+		
+    	var logo = $('#logtit');
+    	console.log(logo.offset());
+    	logo.offset({top: 1, left: -400})
+    	console.log(logo.offset());
+   		TweenLite.to(logo,0.5, {left:1, ease:Back.easeOut});
+    	
+    	var loginbtn = $('#logbtn');
+    	console.log(loginbtn.offset());
+    	loginbtn.offset({top: 1, left: 2000})
+    	console.log(loginbtn.offset());
+   		TweenLite.to(loginbtn,0.5, {left:1, ease:Back.easeOut});
+   					
 	    $('#matchesDiv').hide();
+	    $('#tennisDiv').hide();
 	    $('#receptDiv').hide();
 	    $('#recTable tr:last').hide();
 	    $('#placeButton').hide();
-	    
+	    $("#mesaju").slideUp();  
+	    $("#mesaju").hide();
+     	
+
 	});
 	</script>
+	<script>
+
+</script>
 </head>
 
 <style>
@@ -334,11 +470,12 @@
 	
 }
 	
-</style>
+</style>  
+  
 <body>
+	
 
-
-<nav class="navbar navbar-inverse">
+<nav class="navbar navbar-inverse" style="background-image:url('/images/lots-of-grass-background.jpg') !important; background-repeat: repeat-x;background-size: 100px 120px;">
   <div class="container-fluid">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
@@ -356,7 +493,7 @@
 			    align="right";
 			}		
 		</style>
-      <a class="navbar-brand" href=""><span class="fa fa-dribbble pull-left fa-lg"></span>STARTTOBET.com</a>
+      <a id="logtit" class="navbar-brand" href=""><span class="fa fa-dribbble pull-left fa-lg"></span>STARTTOBET.com</a>
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
      
@@ -371,7 +508,7 @@
       		
         <li>[#if currentUser??]
 			[#else]
-				<a href="/login"><span class="glyphicon glyphicon-log-in"></span> Login</a>
+				<a id="logbtn" href="/login"><span class="glyphicon glyphicon-log-in"></span> Login</a>
 			[/#if]
         </li>   
       </ul>
@@ -394,17 +531,17 @@
                         <div class="panel-body">
                            <ul class="nav" style="padding-left:0px;">
                                 <li>
-                                    <a clickable onclick="searchViaAjax()">Premier League</a>
+                                    <a clickable onclick="searchViaAjax('football','PremierLeague')">Premier League</a>
                                 </li>
                                 <li>
-                                    <a href="http://www.jquery2dotnet.com">Primera Division</a>
+                                    <a clickable onclick="searchViaAjax('football','LaLiga')">Primera Division</a>
                                 </li>
                             
                                 <li>
-                                    <a href="http://www.jquery2dotnet.com">Ligue One</a>
+                                	<a clickable onclick="searchViaAjax('football','LigueOne')">Ligue One</a>
                                 </li>
                                 <li>
-                                    <a href="http://www.jquery2dotnet.com">Bundesliga</a>
+                                	<a clickable onclick="searchViaAjax('football','Bundesliga')">Bundesliga</a>
                                 </li>
                             </ul>
                         </div>
@@ -421,10 +558,10 @@
                         <div class="panel-body">
                           <ul class="nav" style="padding-left:0px;">
                                <li>
-                                    <a href="http://www.jquery2dotnet.com">ATP Tennis</a>
+                                    <a clickable onclick="searchViaAjax('tennis','ATP')">ATP Tennis</a>
                                </li>
                                <li>
-                                    <a href="http://www.jquery2dotnet.com">WTA Tennis</a>
+                                    <a href="">WTA Tennis</a>
                                </li>
                             </ul>
                         </div>
@@ -441,10 +578,10 @@
                         <div class="panel-body">
                           <ul class="nav" style="padding-left:0px;">
                                <li>
-                                    <a href="http://www.jquery2dotnet.com">NBA</a>
+                                    <a href="">NBA</a>
                                </li>
                                  <li>
-                                    <a href="http://www.jquery2dotnet.com">EuroLeague</a>
+                                    <a href="">EuroLeague</a>
                                </li>
                             </ul>
                         </div>
@@ -461,10 +598,10 @@
                         <div class="panel-body">
                           <ul class="nav" style="padding-left:0px;">
                                <li>
-                                    <a href="http://www.jquery2dotnet.com">MLB</a>
+                                    <a href="">MLB</a>
                                </li>
                                  <li>
-                                    <a href="http://www.jquery2dotnet.com">LMB</a>
+                                    <a href="">LMB</a>
                                </li>
                             </ul>
                         </div>
@@ -481,10 +618,10 @@
                         <div class="panel-body">
                           <ul class="nav" style="padding-left:0px;">
                                <li>
-                                    <a href="http://www.jquery2dotnet.com">CFL</a>
+                                    <a href="">CFL</a>
                                </li>
                                  <li>
-                                    <a href="http://www.jquery2dotnet.com">NFL</a>
+                                    <a href="">NFL</a>
                                </li>
                             </ul>
                         </div>
@@ -521,8 +658,8 @@
 
 
  <div id="matchesDiv" class="table-responsive">
- 	<div class="panel panel-default">
-    	<div class="panel-heading text-center"><b>Premier League</b></div>
+ 	<div id="defPanel" class="panel panel-default" style="overflow:auto">
+    	<div id="offerHeader" class="panel-heading text-center" style="min-width:618px;"><b>Premier League</b></div>
  			<table class="table table-nonfluid table-bordered2 table-striped table-condense">
 				  <thead class="thead-default">
 					<tr>
@@ -558,6 +695,36 @@
  		</div>
  	</div>
  </div>
+ 
+ <div id="tennisDiv" class="table-responsive">
+ 	<div class="panel panel-default" style="overflow:auto">
+    	<div id="offerHeaderT"class="panel-heading text-center" style="min-width:618px;"><b>ATP Tennis</b></div>
+ 			<table class="table table-nonfluid table-bordered2 table-striped table-condense">
+				  <thead class="thead-default">
+					<tr>
+						<th><p align="center">Date</th>
+						<th><p align="center">Match Title</th>
+						<th><p align="center">1</th>
+						<th><p align="center">2</th>
+					</tr>
+					 <thead> <tbody>
+					<!-- begin iteration -->
+					[#if tmatches??]
+						[#list tmatches as match] 
+							<tr>
+								<td align="center">${match.matchDate}</td>
+								<td align="center">${match.matchTitle}</td>
+								<td><button id="${match.matchTitle}_1" type="button" class="btn btn-info center-block" onclick="addEventToReceipt('${match.hWin?string["0.00"]}','1','${match.matchTitle}', this.id)">${match.hWin?string["0.00"]}</button></td>
+								<td><button id="${match.matchTitle}_2" type="button" class="btn btn-info center-block" onclick="addEventToReceipt('${match.aWin?string["0.00"]}','2','${match.matchTitle}', this.id)">${match.aWin?string["0.00"]}</button></td>
+							</tr>
+						[/#list]
+					[/#if]
+				<!-- end iteration -->
+ 				</tbody>
+			</table>
+ 		</div>
+ 	</div>
+ </div>
 
 [/#escape]
 
@@ -574,8 +741,8 @@
 						
 					</tr>
 					 <thead> 
-					 	<td align="center" style="background-color: #e4e5e5;">
-					 	<button id="placeButton" class="btn btn-success btn-md pull-center" onclick="saveReceipt()">Place Bet!</button></td>
+					 	<td align="center" style="background-color: #e4e5e5; ">
+					 	<button id="placeButton" class="button button-glow button-rounded button-3d button-action pull-center" onclick="saveReceipt()">Place Bet!</button></td>
 						<td align="right" colspan="2" ><b>Your bet</b>
      					
 						<input id="myTotalValue" style="background-color: #ebf0f0;" onchange="updateInput();" onkeyup="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" type="text" placeholder="Place your bet!"></td>
@@ -592,4 +759,6 @@
  </div>
 
 
-
+<div id="mesaju" class="alert alert-success" role="alert"> 
+	<p align="center" class="alert-link"><b>Success! Your bet was placed successfully!!</b></p>
+</div>

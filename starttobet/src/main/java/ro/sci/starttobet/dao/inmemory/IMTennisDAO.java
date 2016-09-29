@@ -7,22 +7,21 @@ import java.util.LinkedList;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
-import ro.sci.starttobet.dao.sportsdao.FootballDAO;
-import ro.sci.starttobet.domain.Football;
+import ro.sci.starttobet.dao.sportsdao.TennisDAO;
+import ro.sci.starttobet.domain.Tennis;
 
 @Component
-public class IMFootballDAO extends IMBaseDAO<Football> 
-	implements FootballDAO {
+public class IMTennisDAO extends IMBaseDAO<Tennis> implements TennisDAO{
 
 	@Override
-	public Collection<Football> searchByName(String query) {
+	public Collection<Tennis> searchByName(String query) {
 		if (StringUtils.isEmpty(query)) {
 			return getAll();
 		}
 		
-		Collection<Football> all = new LinkedList<Football>(getAll());
-		for (Iterator<Football> it = all.iterator(); it.hasNext();) {
-			Football emp = it.next();
+		Collection<Tennis> all = new LinkedList<Tennis>(getAll());
+		for (Iterator<Tennis> it = all.iterator(); it.hasNext();) {
+			Tennis emp = it.next();
 			String ss = emp.getMatchTitle() + " " + emp.getMatchDate();
 			if (!ss.toLowerCase().contains(query.toLowerCase())) {
 				it.remove();

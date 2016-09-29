@@ -18,7 +18,6 @@ public abstract class IMBaseDAO<T extends AbstractModel>
 
 	@Override
 	public Collection<T> getAll() {
-
 		return models.values();
 	}
 
@@ -54,5 +53,8 @@ public abstract class IMBaseDAO<T extends AbstractModel>
 			models.remove(model.getId());
 		return result;
 	}
-
+	//TODO delete this after database implementation
+	public void clearMapContent() {
+		models.clear();
+	}
 }

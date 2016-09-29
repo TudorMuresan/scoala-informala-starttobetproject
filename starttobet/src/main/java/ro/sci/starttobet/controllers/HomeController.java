@@ -1,7 +1,6 @@
 package ro.sci.starttobet.controllers;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,8 +10,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import ro.sci.starttobet.service.FootballService;
-import ro.sci.starttobet.service.JsonService;
 import ro.sci.starttobet.service.SecurityService;
 
 @Controller
@@ -20,14 +17,7 @@ import ro.sci.starttobet.service.SecurityService;
 @RestController
 
 public class HomeController {
-	
-	
-	@Autowired
-	private FootballService footballService;
-	
-	@Autowired
-	private JsonService jsonService;
-	
+
 	@Autowired
 	private SecurityService securityService;
 	
@@ -37,15 +27,7 @@ public class HomeController {
 		modelAndView.addObject("currentUser", securityService.getCurrentUser());
 		return modelAndView;
 	}
-	
-	@RequestMapping(value = "/footballMatches",method = RequestMethod.GET) 
-	public ModelAndView showMatches() throws IOException{
-		jsonService.scanForFiles();
-		ModelAndView modelAndView = new ModelAndView("home/home");
-		modelAndView.addObject("matches", footballService.listAll());
-		return modelAndView;
-	}
-	
+
 	@RequestMapping(value = "/saveReceipt",method = RequestMethod.POST) 
 	public String saveMatches(@RequestParam String recDetails,String betValue) throws IOException{
 		System.out.println(recDetails);

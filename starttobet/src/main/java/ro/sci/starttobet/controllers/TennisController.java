@@ -1,43 +1,38 @@
 package ro.sci.starttobet.controllers;
 
+import java.io.IOException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import ro.sci.starttobet.service.SecurityService;
-import ro.sci.starttobet.service.FootballService;
 import ro.sci.starttobet.service.JsonService;
+import ro.sci.starttobet.service.TennisService;
 
 @Controller
 @RequestMapping("/tennis")
 @RestController
 public class TennisController{
 	
-	//@Autowired
-	//TODO private TennisService tennisService;
+	@Autowired
+	private TennisService tennisService;
 	
 	@Autowired
-	private SecurityService securityService;
+	private JsonService jsonService;
 	
-	//@Autowired
-	//TODO private JsonService jsonService;
 	
-/*	@RequestMapping(value ="match/list")
-	public ModelAndView list() throws Exception {
-		ModelAndView modelAndView = new ModelAndView("match/list");
-		modelAndView.addObject("matches", footballService.listAll());
-		return modelAndView;
-	}*/
-	
-	@RequestMapping("") 
-	public ModelAndView showFootball() throws Exception {
-		ModelAndView modelAndView = new ModelAndView("match/tennis");
-		//modelAndView.addObject("matches", footballService.listAll());
-		modelAndView.addObject("currentUser", securityService.getCurrentUser());
+	@RequestMapping(value = "/ATP",method = RequestMethod.GET) 
+	public ModelAndView showPremierLeagueMatches() throws IOException{
+		System.out.println("enters");
+		jsonService.scanForFiles("Tennis","ATP");
+		ModelAndView modelAndView = new ModelAndView("home/home");
+		modelAndView.addObject("tmatches", tennisService.listAll());
 		return modelAndView;
 	}
+	
 }
 
 
