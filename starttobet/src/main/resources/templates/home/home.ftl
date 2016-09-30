@@ -21,17 +21,20 @@
     <link  href="[@spring.url '/css/ionicons.css' /]" rel="stylesheet">
 	<link  href="[@spring.url '/css/buttonsClass.css' /]" rel="stylesheet">
 	 
-	
+	<link rel="stylesheet" type="text/css" href="css/normalize.css" />
+	<link rel="stylesheet" type="text/css" href="css/font-awesome.css" />
+	<link rel="stylesheet" type="text/css" href="css/demo.css" />
+	<link rel="stylesheet" type="text/css" href="css/set2.css" />
  
- 
+ 	
 	<script>
+	
 	function searchViaAjax(sport,league) {
 
 		$.ajax({
 			type : "GET",
 			url : sport + "/" + league,
 			success : function(response) {
-				console.log(response);
 				var $result;
 				if(sport ==='football'){
 					$result = $(response).filter('#matchesDiv');
@@ -108,7 +111,7 @@
 			     		
 						});
 						if(totalMatches>0 && $('#myTotalValue').val().length >0){
-							$('#placeButton').show();
+	     					$("#placeButton").removeClass("disabled unselectable");
 						}
 			     		lastRow.show();
 			     	
@@ -240,20 +243,33 @@
      		if(totalMatches>0){
      			setTotalEarnings(lastRow,(currentValue * totalOdd).toFixed(2));
      		}else{
-     		$('#placeButton').hide();
-	     			$("button").each(function(a) {
-			     		if($(this).hasClass("btn-success") && this.id!='placeButton'){
-	 						$(this).removeClass("btn-success");
-		 					$(this).addClass("btn-info");
-	 					}	
-	 					
-			     	});
+     		
+     			
+     			$("#placeButton").addClass("disabled unselectable");
+     		
+     			$("button").each(function(a) {
+		     		if($(this).hasClass("btn-success") && this.id!='placeButton'){
+ 						$(this).removeClass("btn-success");
+	 					$(this).addClass("btn-info");
+ 					}	
+ 					
+		     	});
      			setTotalEarnings(lastRow,'N/A - Please select at least one odd!');
      		}  
 		};
 	
 		function saveReceipt()
 		{
+      		[#if currentUser??]
+			[#else]
+				$('#placeButton').blur();
+				$("#pleaseLogin").slideDown();  
+			    setTimeout(hideLoginMessage, 2000);
+			    
+			    
+      			return false;
+			[/#if]
+      	
 			var tempValueAppend="";
 			var receiptDetails=[];
 			var pairValues=0;
@@ -314,8 +330,13 @@
 		 $( "#mesaju" ).fadeOut( "slow", function() {
 		    // Animation complete.
 		  });
+		   
 		}
 		
+		function hideLoginMessage(){
+		   $("#pleaseLogin").slideUp();  
+		}
+
 		function setRowTotalOdd(rowId, newValue)
 		{
 		    rowId.find('td:first-child').next().html(newValue);
@@ -331,17 +352,18 @@
 		    rowId.find('td:first-child').next().next().html(newValue);
 		};
 		
-		function updateInput(){	
-		console.log("ass");
-		$('#myTotalValue').keyup(function(e){
+		function updateInput2(){	
+		
 		     	var floatRegex = /^((\d+(\.\d *)?)|((\d*\.)?\d+))$/;
 		     	var totalOdd=1;
 		     	var totalMatches =0;
-		     	var currentValue = $(this).val();
+		     	var currentValue = $("#myTotalValue").val();
 		     	
-		     	if(currentValue.length<1){
-		     		$('#placeButton').hide();
-		     	}
+		     	if(currentValue.length>0){
+	     			$("#placeButton").removeClass("disabled unselectable");
+	     		}
+	     		
+		     	
 		     	$("#receptDiv td:first-child").not(":last").next().next().each(function() {
 		     		
 		     		res = $(this).text();
@@ -362,9 +384,52 @@
 	     		}else{
 	     			setTotalEarnings(lastRow,'N/A - Please select at least one odd!');
 	     		}  
-	     		if(totalMatches>0){
-	     			$('#placeButton').show();
+	     		if(currentValue.length>0 && floatRegex.test($('#myTotalValue').val())){
+	     			$("#placeButton").removeClass("disabled unselectable");
 	     		}
+	     		else{
+	     			$("#placeButton").addClass("disabled unselectable");
+	     		}
+	    }
+	    
+		function updateInput(){	
+		$('#myTotalValue').keyup(function(e){
+			
+		     	var floatRegex = /^((\d+(\.\d *)?)|((\d*\.)?\d+))$/;
+		     	var totalOdd=1;
+		     	var totalMatches =0;
+		     	var currentValue = $(this).val();
+		     	if(currentValue.length>0){
+	     			$("#placeButton").removeClass("disabled unselectable");
+	     		}
+	     		
+		     	$("#receptDiv td:first-child").not(":last").next().next().each(function() {
+		     		
+		     		res = $(this).text();
+		     		if(floatRegex.test(res)) {
+		     			totalMatches++;
+						totalOdd *=res;
+					   
+					}
+		     		
+				});
+				var lastRow = $('#recTable tr:last');
+		     	lastRow.show();
+		     	
+		     	setRowTotalOdd(lastRow,totalOdd.toFixed(2));
+	     		setTotalMatches(lastRow,totalMatches);
+	     		if(totalMatches>0){
+     				setTotalEarnings(lastRow,(currentValue * totalOdd).toFixed(2));
+	     		}else{
+	     			setTotalEarnings(lastRow,'N/A - Please select at least one odd!');
+	     		}  
+	     		if(currentValue.length>0 && floatRegex.test($('#myTotalValue').val())){
+	     			$("#placeButton").removeClass("disabled unselectable");
+	     		}
+	     		else{
+	     			$("#placeButton").addClass("disabled unselectable");
+	     		}
+	     		
 		    });
 	    }
 	</script>
@@ -379,26 +444,28 @@
 		$(document).ready(function(){  
 		
     	var logo = $('#logtit');
-    	console.log(logo.offset());
-    	logo.offset({top: 1, left: -400})
-    	console.log(logo.offset());
+    	logo.offset({top: -5, left: -400})
    		TweenLite.to(logo,0.5, {left:1, ease:Back.easeOut});
-    	
+    	  
     	var loginbtn = $('#logbtn');
-    	console.log(loginbtn.offset());
     	loginbtn.offset({top: 1, left: 2000})
-    	console.log(loginbtn.offset());
    		TweenLite.to(loginbtn,0.5, {left:1, ease:Back.easeOut});
    					
 	    $('#matchesDiv').hide();
 	    $('#tennisDiv').hide();
 	    $('#receptDiv').hide();
 	    $('#recTable tr:last').hide();
-	    $('#placeButton').hide();
 	    $("#mesaju").slideUp();  
 	    $("#mesaju").hide();
-     	
-
+	    
+	    $("#pleaseLogin").slideUp();  
+	   	$("#pleaseLogin").hide();
+	   	
+	   	$("#myTotalValue").bind('cut copy paste', function(e)
+        {
+        	setTimeout(updateInput2, 10);
+            
+        });
 	});
 	</script>
 	<script>
@@ -416,6 +483,25 @@
 	container2{margin-top:50px;}
 	.panel-body { padding:0px; }
 	.panel-body ul { padding-left: 15px }
+	
+	button.unselectable {
+	    -webkit-touch-callout: none;
+	    -webkit-user-select: none;
+	    -khtml-user-select: none;
+	    -moz-user-select: none;
+	    -ms-user-select: none;
+	    user-select: none;
+	}
+	
+	button.selectable {
+	    -webkit-touch-callout: all;
+	    -webkit-user-select: all;
+	    -khtml-user-select: all;
+	    -moz-user-select: all;
+	    -ms-user-select: all;
+	    user-select: all;
+	}
+	
 	
 	li{
 		border: 1px solid rgba(211, 211, 211, .3);
@@ -475,7 +561,7 @@
 <body>
 	
 
-<nav class="navbar navbar-inverse" style="background-image:url('/images/lots-of-grass-background.jpg') !important; background-repeat: repeat-x;background-size: 100px 120px;">
+<nav class="navbar navbar-inverse" style="background-image:url('/images/lots-of-grass-background.jpg') ; background-repeat: repeat-x;background-size: 100px 120px;">
   <div class="container-fluid">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
@@ -547,7 +633,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="panel panel-default">
+                <div id="specialTennis" class="panel panel-default">
                     <div class="panel-heading clickable">
                         <h4 class="panel-title">
                             <a data-toggle="collapse" data-parent="#accordion" data-target="#collapseTwo"><span class="ionicons ion-ios-tennisball">
@@ -655,9 +741,9 @@
 	}
   </style>
 
-
-
- <div id="matchesDiv" class="table-responsive">
+	
+    	
+ <div style="display:none" id="matchesDiv" class="table-responsive">
  	<div id="defPanel" class="panel panel-default" style="overflow:auto">
     	<div id="offerHeader" class="panel-heading text-center" style="min-width:618px;"><b>Premier League</b></div>
  			<table class="table table-nonfluid table-bordered2 table-striped table-condense">
@@ -696,7 +782,7 @@
  	</div>
  </div>
  
- <div id="tennisDiv" class="table-responsive">
+ <div style="display:none" id="tennisDiv" class="table-responsive">
  	<div class="panel panel-default" style="overflow:auto">
     	<div id="offerHeaderT"class="panel-heading text-center" style="min-width:618px;"><b>ATP Tennis</b></div>
  			<table class="table table-nonfluid table-bordered2 table-striped table-condense">
@@ -728,9 +814,12 @@
 
 [/#escape]
 
+<div style="display:none" id="pleaseLogin" class="alert alert-warning" role="alert"> 
+	<p align="center" class="alert-link"><b>Please login or create an account to place your bet!!</b></p>
+</div>
 
-<div id="receptDiv" class="table-responsive">
- 	<div class="panel panel-default"> 
+<div style="display:none" id="receptDiv" class="table-responsive" >
+ 	<div class="panel panel-default" style="overflow:auto"> 
     	<div class="panel-heading text-center" ><b>Your Matches</b></div>
  			<table id ="recTable" class="table table-nonfluid table-bordered2 table-striped table-condense">
 				  <thead class="thead-default">
@@ -742,10 +831,17 @@
 					</tr>
 					 <thead> 
 					 	<td align="center" style="background-color: #e4e5e5; ">
-					 	<button id="placeButton" class="button button-glow button-rounded button-3d button-action pull-center" onclick="saveReceipt()">Place Bet!</button></td>
-						<td align="right" colspan="2" ><b>Your bet</b>
-     					
-						<input id="myTotalValue" style="background-color: #ebf0f0;" onchange="updateInput();" onkeyup="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" type="text" placeholder="Place your bet!"></td>
+					 	<button style="height: 55px;width: 190px;" id="placeButton" class="disabled unselectable button button-rounded  button-action pull-center" onclick="saveReceipt()">Place Bet!</button></td>
+						<td align="right" colspan="2" >
+     					<span class="input input--nao">
+					<input id="myTotalValue" class="input__field input__field--nao" type="text" id="input-1"onchange="updateInput();" onkeyup="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" type="text" />
+					<label class="input__label input__label--nao" for="input-1">
+						<span class="input__label-content input__label-content--nao"><b>Your bet</b></span>
+					</label>
+					<svg class="graphic graphic--nao" width="300%" height="100%" viewBox="0 0 1200 60" preserveAspectRatio="none">
+						<path d="M0,56.5c0,0,298.666,0,399.333,0C448.336,56.5,513.994,46,597,46c77.327,0,135,10.5,200.999,10.5c95.996,0,402.001,0,402.001,0"/>
+					</svg>
+				</span>
 					<tr>
 						<td align="center" style="background-color: #45b3e0;"><b>Total Matches</b>
 						<td align="center" style="background-color: #45b3e0;"><b>Total Odd</b>
@@ -759,6 +855,50 @@
  </div>
 
 
-<div id="mesaju" class="alert alert-success" role="alert"> 
+<div style="display:none" id="mesaju" class="alert alert-success" role="alert"> 
 	<p align="center" class="alert-link"><b>Success! Your bet was placed successfully!!</b></p>
 </div>
+
+
+
+			
+				
+				
+		
+		<script src="js/classie.js"></script>
+		<script>
+			(function() {
+				// trim polyfill : https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/Trim
+				if (!String.prototype.trim) {
+					(function() {
+						// Make sure we trim BOM and NBSP
+						var rtrim = /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g;
+						String.prototype.trim = function() {
+							return this.replace(rtrim, '');
+						};
+					})();
+				}
+
+				[].slice.call( document.querySelectorAll( 'input.input__field' ) ).forEach( function( inputEl ) {
+					// in case the input is already filled..
+					if( inputEl.value.trim() !== '' ) {
+						classie.add( inputEl.parentNode, 'input--filled' );
+					}
+
+					// events:
+					inputEl.addEventListener( 'focus', onInputFocus );
+					inputEl.addEventListener( 'blur', onInputBlur );
+				} );
+
+				function onInputFocus( ev ) {
+					classie.add( ev.target.parentNode, 'input--filled' );
+				}
+
+				function onInputBlur( ev ) {
+					if( ev.target.value.trim() === '' ) {
+						classie.remove( ev.target.parentNode, 'input--filled' );
+					}
+				}
+			})();
+		</script>
+	
