@@ -26,9 +26,47 @@
 	<link rel="stylesheet" type="text/css" href="css/demo.css" />
 	<link rel="stylesheet" type="text/css" href="css/set2.css" />
  
- 	
+ 	<!-- Add focus/defocus events to input value field -->
+	<script src="js/classie.js"></script>
+		<script>
+			function loadExtraEffects(){
+			(function() {
+				// trim polyfill : https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/Trim
+				if (!String.prototype.trim) {
+					(function() {
+						// Make sure we trim BOM and NBSP
+						var rtrim = /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g;
+						String.prototype.trim = function() {
+							return this.replace(rtrim, '');
+						};
+					})();
+				}
+
+				[].slice.call( document.querySelectorAll( 'input.input__field' ) ).forEach( function( inputEl ) {
+					// in case the input is already filled..
+					if( inputEl.value.trim() !== '' ) {
+						classie.add( inputEl.parentNode, 'input--filled' );
+					}
+
+					// events:
+					inputEl.addEventListener( 'focus', onInputFocus );
+					inputEl.addEventListener( 'blur', onInputBlur );
+				} );
+
+				function onInputFocus( ev ) {
+					classie.add( ev.target.parentNode, 'input--filled' );
+				}
+
+				function onInputBlur( ev ) {
+					if( ev.target.value.trim() === '' ) {
+						classie.remove( ev.target.parentNode, 'input--filled' );
+					}
+				}
+			})();}
+		</script>
 	<script>
 	
+	<!-- Send Ajax call to the controller and handles the result -->
 	function searchViaAjax(sport,league) {
 
 		$.ajax({
@@ -62,6 +100,8 @@
 		});
 
 	}</script>
+	
+	<!-- Add match event to user's receipt -->
 	<script>
 		function addEventToReceipt(buttonValue, prediction ,mTitle, buttonId) {
 		 	var res;
@@ -134,6 +174,8 @@
 		});	
 	}
 	</script>
+	
+	<!--  Resets the receipt-div after the bet was placed successfully-->
 	<script>
 		function resetPage(){
 			var lastRow = $('#recTable tr:last');
@@ -154,6 +196,8 @@
 		
 		}
 	</script>
+	
+	<!--  Removes event from receipt if clicking the selected match again-->
 	<script>
 		function deleteFieldFromButton(currentMatch){
 			var selectedMatch;
@@ -176,6 +220,8 @@
 			});
 		}
 	</script>
+	
+	<!--  Updates all the fields from the receipt and from the match list-->
 	<script>
 		function updateFields(mesg)
 		{
@@ -258,6 +304,7 @@
      		}  
 		};
 	
+		<!-- This method saves/if successfully the receipt into the database -->
 		function saveReceipt()
 		{
       		[#if currentUser??]
@@ -326,6 +373,7 @@
 
 		};
 		
+		<!-- This method hides the success receipt save message -->
 		function hideMesaj(){
 		 $( "#mesaju" ).fadeOut( "slow", function() {
 		    // Animation complete.
@@ -333,25 +381,30 @@
 		   
 		}
 		
+		<!-- Hides the login require message -->
 		function hideLoginMessage(){
 		   $("#pleaseLogin").slideUp();  
 		}
 
+		<!-- Updates Total Odd into the user's receipt after any change-->
 		function setRowTotalOdd(rowId, newValue)
 		{
 		    rowId.find('td:first-child').next().html(newValue);
 		};
 		
+		<!-- Updates Total Matches into the user's receipt after any change-->
 		function setTotalMatches(rowId, newValue)
 		{
 		    rowId.find('td:first-child').html(newValue);
 		};
 		
+		<!-- Updates Total Earnings into the user's receipt after any change-->
 		function setTotalEarnings(rowId, newValue)
 		{
 		    rowId.find('td:first-child').next().next().html(newValue);
 		};
 		
+		<!-- Updates the receipt after value placed input changes for example from cut/copy/paste commands on input-->
 		function updateInput2(){	
 		
 		     	var floatRegex = /^((\d+(\.\d *)?)|((\d*\.)?\d+))$/;
@@ -384,7 +437,7 @@
 	     		}else{
 	     			setTotalEarnings(lastRow,'N/A - Please select at least one odd!');
 	     		}  
-	     		if(currentValue.length>0 && floatRegex.test($('#myTotalValue').val())){
+	     		if(totalMatches>0 &&currentValue.length>0 && floatRegex.test($('#myTotalValue').val())){
 	     			$("#placeButton").removeClass("disabled unselectable");
 	     		}
 	     		else{
@@ -392,6 +445,7 @@
 	     		}
 	    }
 	    
+	    <!-- Updates the receipt after value placed input changes directly-->
 		function updateInput(){	
 		$('#myTotalValue').keyup(function(e){
 			
@@ -423,7 +477,7 @@
 	     		}else{
 	     			setTotalEarnings(lastRow,'N/A - Please select at least one odd!');
 	     		}  
-	     		if(currentValue.length>0 && floatRegex.test($('#myTotalValue').val())){
+	     		if(totalMatches>0 && currentValue.length>0 && floatRegex.test($('#myTotalValue').val())){
 	     			$("#placeButton").removeClass("disabled unselectable");
 	     		}
 	     		else{
@@ -434,15 +488,18 @@
 	    }
 	</script>
 	
+	<!-- Hide all the divs that are not active-->
 	<script>
 		function hideAllLoadedDivs(){
 			$('#matchesDiv').hide();
 	    	$('#tennisDiv').hide();
 		}
 	</script>
+	
+	<!-- Prepare the html hiding the loaded resources and showing only the first needed ones-->
 	<script>
 		$(document).ready(function(){  
-		
+		loadExtraEffects();
     	var logo = $('#logtit');
     	logo.offset({top: -5, left: -400})
    		TweenLite.to(logo,0.5, {left:1, ease:Back.easeOut});
@@ -858,47 +915,3 @@
 <div style="display:none" id="mesaju" class="alert alert-success" role="alert"> 
 	<p align="center" class="alert-link"><b>Success! Your bet was placed successfully!!</b></p>
 </div>
-
-
-
-			
-				
-				
-		
-		<script src="js/classie.js"></script>
-		<script>
-			(function() {
-				// trim polyfill : https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/Trim
-				if (!String.prototype.trim) {
-					(function() {
-						// Make sure we trim BOM and NBSP
-						var rtrim = /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g;
-						String.prototype.trim = function() {
-							return this.replace(rtrim, '');
-						};
-					})();
-				}
-
-				[].slice.call( document.querySelectorAll( 'input.input__field' ) ).forEach( function( inputEl ) {
-					// in case the input is already filled..
-					if( inputEl.value.trim() !== '' ) {
-						classie.add( inputEl.parentNode, 'input--filled' );
-					}
-
-					// events:
-					inputEl.addEventListener( 'focus', onInputFocus );
-					inputEl.addEventListener( 'blur', onInputBlur );
-				} );
-
-				function onInputFocus( ev ) {
-					classie.add( ev.target.parentNode, 'input--filled' );
-				}
-
-				function onInputBlur( ev ) {
-					if( ev.target.value.trim() === '' ) {
-						classie.remove( ev.target.parentNode, 'input--filled' );
-					}
-				}
-			})();
-		</script>
-	
